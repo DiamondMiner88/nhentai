@@ -1,0 +1,91 @@
+import fetch from 'node-fetch';
+import { API_URL, HOST_URL } from './urls';
+import Doujin from './doujin';
+import SearchResult from './search';
+
+export enum SortMethods {
+    RECENT = '',
+    POPULAR_ALL_TIME = 'popular',
+    POPULAR_THIS_WEEK = 'popular-week',
+    POPULAR_TODAY = 'popular-today',
+}
+
+export class API {
+    fetchDoujin(doujinID: number | string) {
+        return new Promise((resolve, reject) => {
+            if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
+            if (+doujinID <= -1) return reject(new Error('DoujinID cannot be lower than 1.'));
+
+            fetch(`${API_URL}/gallery/${doujinID}`)
+                .then(data => data.json())
+                .then(data => {
+                    if (data.error) {
+                        if (data.error === 'does not exist') reject(new Error('Doujin does not exist.'));
+                        else reject(new Error(data.error));
+                    } else resolve(new Doujin(data));
+                })
+                .catch(error => reject(error));
+        });
+    }
+
+    search(query: string, page: string | number = 1, sort: string = '') {
+        return new Promise((resolve, reject) => {
+            if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
+
+            const sorting = !!sort ? `&sort=${sort}` : '';
+            fetch(`${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`)
+                .then(data => data.json())
+                .then(data => resolve(new SearchResult(data)))
+                .catch(error => reject(error));
+        });
+    }
+
+    searchByTagID(tagID: number | string, page: string | number = 1) {
+        return new Promise((resolve, reject) => {
+            if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
+            if (isNaN(+tagID)) return reject(new Error('TagID paramater is not a number'));
+
+            fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}`)
+                .then(data => data.json())
+                .then(data => resolve(new SearchResult(data)))
+                .catch(error => reject(error));
+        });
+    }
+
+    searchRelated(doujinID: number | string, page: string | number = 1) {
+        return new Promise((resolve, reject) => {
+            if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
+            if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number'));
+
+            fetch(`${API_URL}/gallery/${doujinID}/related`)
+                .then(data => data.json())
+                .then(data => resolve(new SearchResult(data)))
+                .catch(error => reject(error));
+        });
+    }
+
+    randomDoujinID(): Promise<number> {
+        return new Promise((resolve, reject) => {
+            fetch(`${HOST_URL}/random`, { method: 'HEAD' })
+                .then(data => {
+                    const match = data.url.match(/https?:\/\/nhentai\.net\/g\/(\d{1,7})\//);
+                    if (!match || !match[1])
+                        return reject(new Error('Could not find doujin id in response direct url.'));
+                    resolve(+match[1]);
+                })
+                .catch(error => reject(error));
+        });
+    }
+
+    randomDoujin() {
+        return new Promise((resolve, reject) => {
+            this.randomDoujinID()
+                .then((doujinID: number) =>
+                    this.fetchDoujin(doujinID)
+                        .then(doujin => resolve(doujin))
+                        .catch(error => reject(error)),
+                )
+                .catch(error => reject(error));
+        });
+    }
+}

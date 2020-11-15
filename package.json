@@ -1,18 +1,13 @@
 {
     "name": "nhentai",
     "version": "1.0.0",
-    "description": "An API wrapper for the nhentai api.",
+    "description": "An API wrapper for nhentai.net",
     "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "types": "types/index.d.ts",
     "scripts": {
         "test": "mocha -t 10000 -r ts-node/register tests/*.spec.ts",
-        "format": "prettier --write \"src/*.ts\"",
         "lint": "tslint -p tsconfig.json",
-        "build": "rm -rf lib/** && tsc && copyfiles -u 1 \"src/**/*.d.ts\" lib",
-        "prepare": "npm run build",
-        "prepublishOnly": "npm run lint",
-        "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags"
+        "build": "rm -rf lib/** && tsc"
     },
     "keywords": [
         "nhentai",
@@ -20,16 +15,21 @@
         "api",
         "wrapper"
     ],
-    "author": "DiamondMiner88",
+    "author": {
+        "name": "DiamondMiner88",
+        "url": "https://github.com/DiamondMiner88/"
+    },
     "license": "MIT",
     "dependencies": {
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {
         "@types/chai": "^4.2.14",
+        "@types/chai-as-promised": "^7.1.3",
         "@types/mocha": "^8.0.4",
         "@types/node-fetch": "^2.5.7",
         "chai": "^4.2.0",
+        "chai-as-promised": "^7.1.1",
         "copyfiles": "^2.4.0",
         "mocha": "^8.2.1",
         "prettier": "^2.1.2",
@@ -42,7 +42,11 @@
         "type": "git",
         "url": "git+https://github.com/DiamondMiner88/nhentai.git"
     },
+    "bugs": {
+        "url": "https://github.com/DiamondMiner88/nhentai/issues"
+    },
     "files": [
-        "lib/**/*"
+        "lib/**/*",
+        "types/index.d.ts"
     ]
 }

@@ -1,4 +1,4 @@
-import { THUMBNAIL_URL, IMAGE_URL } from './index';
+import { THUMBNAIL_URL, IMAGE_URL } from './urls';
 
 export default class Image {
     readonly extension: string;

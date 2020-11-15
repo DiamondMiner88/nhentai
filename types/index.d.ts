@@ -4,32 +4,33 @@ declare module 'nhentai' {
     export const THUMBNAIL_URL: string;
     export const API_URL: string;
 
-    export default class NHentai {
+    export enum SortMethods {
+        RECENT = '',
+        POPULAR_ALL_TIME = 'popular',
+        POPULAR_THIS_WEEK = 'popular-week',
+        POPULAR_TODAY = 'popular-today',
+    }
+
+    export class API {
         /**
          * Fetch a doujin's info.
          * @param doujinID ID of the doujin to get. Commonly referred to as '6 digit number'.
-         * @returns A parsed Book or null if nothing found.
+         * @returns A parsed Book or rejects if it doesn't exist.
          */
-        fetchDoujin(doujinID: number | string): Promise<Book | null>;
+        fetchDoujin(doujinID: number | string): Promise<Doujin | null>;
 
         /**
          * Search nhentai for any doujin that matches the query in any titles.
          * @param query String to match against titles.
          * @param page Which nhentai page to look on.
          * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
-         * @returns A SearchResult or null if page is NaN.
          */
-        search(
-            query: string,
-            page?: string | number,
-            sort?: 'popular' | 'popular-week' | 'popular-today' | '',
-        ): Promise<SearchResult | null>;
+        search(query: string, page?: string | number, sort?: SortMethods): Promise<SearchResult | null>;
 
         /**
          * Searches nhentai for any doujins that have this tag.
          * @param tagID ID of the tag.
          * @param page Which nhentai page to look on.
-         * @returns A SearchResult or null if tagID or page is NaN.
          */
         searchByTagID(tagID: number | string, page?: string | number): Promise<SearchResult | null>;
 
@@ -37,12 +38,21 @@ declare module 'nhentai' {
          * Find similar doujins.
          * @param doujinID ID of the doujin.
          * @param page Which nhentai page to look on.
-         * @returns A SearchResult or null if doujinID or page is NaN.
          */
         searchRelated(doujinID: number | string, page?: string | number): Promise<SearchResult | null>;
+
+        /**
+         * Gets a random doujin by using nhentai's `/random` user endpoint which redirects to a doujin and the url is captured.
+         */
+        randomDoujinID(): Promise<number>;
+
+        /**
+         * Gets a random doujin using `randomDoujinID` and `fetchDoujin`
+         */
+        randomDoujin(): Promise<Doujin>;
     }
 
-    class Book {
+    class Doujin {
         /**
          * Doujin ID, most commonly referred to as '6 digit code'.
          */
@@ -144,7 +154,7 @@ declare module 'nhentai' {
         /**
          * Doujins that were returned from the search.
          */
-        readonly doujins: Book[];
+        readonly doujins: Doujin[];
         /**
          * Amount of total doujins returned from the search.
          */

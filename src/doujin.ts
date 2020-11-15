@@ -1,8 +1,8 @@
-import { HOST_URL } from './index';
+import { HOST_URL } from './urls';
 import Image from './image';
 import Tag from './tag';
 
-export default class Book {
+export default class Doujin {
     readonly doujinId: number;
     readonly mediaId: number;
     readonly titles: {

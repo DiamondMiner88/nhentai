@@ -1,4 +1,4 @@
-import { HOST_URL } from './index';
+import { HOST_URL } from './urls';
 
 export default class Tag {
     readonly id: number;

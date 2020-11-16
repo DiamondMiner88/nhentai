@@ -10,7 +10,7 @@ const api = new API();
 
 describe('fetchDoujin', () => {
     it('should return a doujin', async () => {
-        const result: any = await api.fetchDoujin(177013);
+        const result: any = await api.fetchDoujin(334430);
         return expect(result.pages[0]).instanceOf(Image);
     });
     it('should reject if page is not a number', () => {
@@ -40,7 +40,7 @@ describe('searchByTagID', () => {
 
 describe('searchRelated', () => {
     it('should return a search result', async () => {
-        const result: any = await api.searchRelated(177013);
+        const result: any = await api.searchRelated(334430);
         return expect(result.doujins[0].pages[0]).instanceOf(Image);
     });
 });

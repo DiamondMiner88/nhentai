@@ -1,6 +1,6 @@
 {
     "name": "nhentai",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "An API wrapper for nhentai.net",
     "main": "lib/index.js",
     "types": "types/index.d.ts",

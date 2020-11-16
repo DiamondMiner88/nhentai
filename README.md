@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" src="../nhentai/docs/logo.svg">
+  <img width="300" src="./docs/logo.svg">
 </p>
 
 # A simple API wrapper for [nhentai.net](https://nhentai.net)

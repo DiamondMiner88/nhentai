@@ -11,6 +11,12 @@ export enum SortMethods {
 }
 
 export class API {
+    options: { debug?: boolean; verbalDownloads?: boolean };
+
+    constructor(options: any = { debug: false, verbalDownloads: false }) {
+        this.options = options;
+    }
+
     fetchDoujin(doujinID: number | string) {
         return new Promise((resolve, reject) => {
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
@@ -22,7 +28,7 @@ export class API {
                     if (data.error) {
                         if (data.error === 'does not exist') reject(new Error('Doujin does not exist.'));
                         else reject(new Error(data.error));
-                    } else resolve(new Doujin(data));
+                    } else resolve(new Doujin(data, this.options));
                 })
                 .catch(error => reject(error));
         });
@@ -35,7 +41,7 @@ export class API {
             const sorting = !!sort ? `&sort=${sort}` : '';
             fetch(`${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`)
                 .then(data => data.json())
-                .then(data => resolve(new SearchResult(data)))
+                .then(data => resolve(new SearchResult(data, this.options)))
                 .catch(error => reject(error));
         });
     }
@@ -47,7 +53,7 @@ export class API {
 
             fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}`)
                 .then(data => data.json())
-                .then(data => resolve(new SearchResult(data)))
+                .then(data => resolve(new SearchResult(data, this.options)))
                 .catch(error => reject(error));
         });
     }
@@ -59,7 +65,7 @@ export class API {
 
             fetch(`${API_URL}/gallery/${doujinID}/related`)
                 .then(data => data.json())
-                .then(data => resolve(new SearchResult(data)))
+                .then(data => resolve(new SearchResult(data, this.options)))
                 .catch(error => reject(error));
         });
     }

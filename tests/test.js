@@ -13,4 +13,10 @@ api.fetchDoujin(334430).then(doujin => {
 
     // english, translated, kantai collection, teitoku, yahagi, rosapersica, [etc...]
     doujin.tags.map(tag => tag.name).join(', ');
+
+    // Downloads page 1 to C:/temp/1.[extension]
+    doujin.pages[0].download('C:/temp', '1');
+
+    // Downloads zip-bundled doujin to C:/temp/334430.zip
+    doujin.downloadZipped('C:/temp/334430.zip');
 });

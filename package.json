@@ -1,6 +1,6 @@
 {
     "name": "nhentai",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "An API wrapper for nhentai.net",
     "main": "lib/index.js",
     "types": "types/index.d.ts",
@@ -9,6 +9,10 @@
         "lint": "tslint -p tsconfig.json",
         "build": "rm -rf lib/** && tsc"
     },
+    "engines": {
+        "node": ">=10.12.0"
+    },
+    "engineStrict": true,
     "keywords": [
         "nhentai",
         "hentai",
@@ -21,6 +25,7 @@
     },
     "license": "MIT",
     "dependencies": {
+        "jszip": "^3.5.0",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {

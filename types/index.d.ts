@@ -11,7 +11,20 @@ declare module 'nhentai' {
         POPULAR_TODAY = 'popular-today',
     }
 
+    /**
+     * @param debug Doesn't do anything yet
+     * @param verbalDownloads Writes updates to console during downloads
+     */
+    type APIOptions = {
+        debug?: boolean;
+        verbalDownloads?: boolean;
+    };
+
     export class API {
+        options: {};
+
+        constructor(options?: APIOptions);
+
         /**
          * Fetch a doujin's info.
          * @param doujinID ID of the doujin to get. Commonly referred to as '6 digit number'.
@@ -123,6 +136,14 @@ declare module 'nhentai' {
          * @returns true if doujin contains a matching tag.
          */
         hasTagByID(ID: number): boolean;
+
+        /**
+         * Download each image from the api individually and bundle to a zip
+         * @param path Path of the file to save to
+         * @param options Additional options
+         * @param options.overwrite Reject if the file already exists
+         */
+        downloadZipped(path: string, options?: { overwrite?: boolean }): Promise<void>;
     }
 
     class Image {
@@ -134,6 +155,20 @@ declare module 'nhentai' {
         readonly width: number;
         readonly url: string;
         readonly type: 'page' | 'thumbnail' | 'cover';
+
+        /**
+         * Fetches the image to a buffer
+         */
+        fetchBuffer(): Promise<Buffer>;
+
+        /**
+         * Download the image to a file
+         * @param targetDir The target directory to save to
+         * @param fileName The file name to save to
+         * @param options Additional options
+         * @param options.overwrite Reject if the file already exists
+         */
+        download(targetDir: string, fileName: string, options?: { overwrite?: boolean }): Promise<void>;
     }
 
     class Tag {

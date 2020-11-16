@@ -51,8 +51,8 @@ describe('randomDoujinID', () => {
     });
 });
 
-describe('randomDoujin', () => {
-    it('should return a Doujin', async () => {
-        return expect(api.randomDoujin()).to.eventually.be.instanceOf(Doujin);
-    });
-});
+// describe('randomDoujin', () => {
+//     it('should return a Doujin', () => {
+//         return expect(api.randomDoujin()).to.eventually.be.instanceOf(Doujin);
+//     });
+// });

@@ -6,7 +6,11 @@ chaiUse(chai_as_promised);
 import { API } from '../src/index';
 import Image from '../src/image';
 import Doujin from '../src/Doujin';
-const api = new API();
+// @ts-expect-error not made optional the constructor yet
+const api = new API({
+    // buildAPIURLs: url => 'https://cors-anywhere.herokuapp.com/' + url,
+    // headers: { 'Origin': 'localhost' },
+});
 
 describe('fetchDoujin', () => {
     it('should return a doujin', async () => {

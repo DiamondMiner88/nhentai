@@ -14,14 +14,19 @@ declare module 'nhentai' {
     /**
      * @param debug Doesn't do anything yet
      * @param verbalDownloads Writes updates to console during downloads
+     * @param buildAPIURLs Modify the url to be used for api requests. An example of this is bypassing CORS for APIs that don't have the Any Origin header. Example function:\
+     * `(url) => "https://cors-anywhere.herokuapp.com/" + url`
+     * @param headers Custom headers to always overwrite on API requests
      */
-    type APIOptions = {
-        debug?: boolean;
-        verbalDownloads?: boolean;
+    export type APIOptions = {
+        debug: boolean;
+        verbalDownloads: boolean;
+        buildAPIURLs: (url: string) => string;
+        headers: Record<string, string>;
     };
 
     export class API {
-        options: {};
+        options: APIOptions;
 
         constructor(options?: APIOptions);
 

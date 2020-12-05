@@ -43,7 +43,7 @@ export default class Image {
         });
     }
 
-    download(targetDir: string, filename: string, options: any = { overwrite: true }) {
+    download(targetDir: string, filename: string, options: any = { overwrite: true }): Promise<void> {
         return new Promise((resolve, reject) => {
             const path = join(targetDir, filename + '.' + this.extension);
             if (!options.overwrite && fs.existsSync(path)) return reject(new Error('File already exists.'));

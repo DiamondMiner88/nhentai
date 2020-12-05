@@ -11,18 +11,23 @@ export enum SortMethods {
 }
 
 export class API {
-    options: { debug?: boolean; verbalDownloads?: boolean };
+    options: {
+        debug: boolean;
+        verbalDownloads: boolean;
+        buildAPIURLs: (url: string) => string;
+        headers: Record<string, string>;
+    };
 
-    constructor(options: any = { debug: false, verbalDownloads: false }) {
+    constructor(options = { debug: false, verbalDownloads: false, buildAPIURLs: (url: string) => url, headers: {} }) {
         this.options = options;
     }
 
-    fetchDoujin(doujinID: number | string) {
+    fetchDoujin(doujinID: number | string): Promise<Doujin | null> {
         return new Promise((resolve, reject) => {
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
             if (+doujinID <= -1) return reject(new Error('DoujinID cannot be lower than 1.'));
 
-            fetch(`${API_URL}/gallery/${doujinID}`)
+            fetch(this.options.buildAPIURLs(`${API_URL}/gallery/${doujinID}`), { headers: this.options.headers })
                 .then(data => data.json())
                 .then(data => {
                     if (data.error) {
@@ -34,36 +39,42 @@ export class API {
         });
     }
 
-    search(query: string, page: string | number = 1, sort: string = '') {
+    search(query: string, page: string | number = 1, sort = ''): Promise<SearchResult | null> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
 
             const sorting = !!sort ? `&sort=${sort}` : '';
-            fetch(`${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`)
+            fetch(this.options.buildAPIURLs(`${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`), {
+                headers: this.options.headers,
+            })
                 .then(data => data.json())
                 .then(data => resolve(new SearchResult(data, this.options)))
                 .catch(error => reject(error));
         });
     }
 
-    searchByTagID(tagID: number | string, page: string | number = 1) {
+    searchByTagID(tagID: number | string, page: string | number = 1): Promise<SearchResult | null> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
             if (isNaN(+tagID)) return reject(new Error('TagID paramater is not a number'));
 
-            fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}`)
+            fetch(this.options.buildAPIURLs(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}`), {
+                headers: this.options.headers,
+            })
                 .then(data => data.json())
                 .then(data => resolve(new SearchResult(data, this.options)))
                 .catch(error => reject(error));
         });
     }
 
-    searchRelated(doujinID: number | string, page: string | number = 1) {
+    searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult | null> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number'));
 
-            fetch(`${API_URL}/gallery/${doujinID}/related`)
+            fetch(this.options.buildAPIURLs(`${API_URL}/gallery/${doujinID}/related`), {
+                headers: this.options.headers,
+            })
                 .then(data => data.json())
                 .then(data => resolve(new SearchResult(data, this.options)))
                 .catch(error => reject(error));
@@ -72,7 +83,7 @@ export class API {
 
     randomDoujinID(): Promise<number> {
         return new Promise((resolve, reject) => {
-            fetch(`${HOST_URL}/random`, { method: 'HEAD' })
+            fetch(`${HOST_URL}/random`, { method: 'HEAD', headers: this.options.headers })
                 .then(data => {
                     const match = data.url.match(/https?:\/\/nhentai\.net\/g\/(\d{1,7})\//);
                     if (!match || !match[1])
@@ -83,12 +94,12 @@ export class API {
         });
     }
 
-    randomDoujin() {
+    randomDoujin(): Promise<Doujin> {
         return new Promise((resolve, reject) => {
             this.randomDoujinID()
                 .then((doujinID: number) =>
                     this.fetchDoujin(doujinID)
-                        .then(doujin => resolve(doujin))
+                        .then(doujin => resolve(doujin as Doujin))
                         .catch(error => reject(error)),
                 )
                 .catch(error => reject(error));

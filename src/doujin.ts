@@ -1,5 +1,4 @@
 import { HOST_URL } from './urls';
-import { API } from './api';
 import Image from './image';
 import Tag from './tag';
 import * as fs from 'fs';
@@ -35,7 +34,8 @@ export default class Doujin {
         this.favorites = book.num_favorites;
         this.url = `${HOST_URL}/g/${book.id}`;
         this.pages = book.images.pages.map(
-            (i: object, pageNum: number) => new Image({ ...i, page_number: pageNum + 1 }, this.mediaId, 'page'),
+            (i: Record<string, unknown>, pageNum: number) =>
+                new Image({ ...i, page_number: pageNum + 1 }, this.mediaId, 'page'),
         );
         this.cover = new Image(book.images.cover, this.mediaId, 'cover');
         this.thumbnail = new Image(book.images.thumbnail, this.mediaId, 'thumbnail');
@@ -44,18 +44,19 @@ export default class Doujin {
         this.apiOptions = apiOptions;
     }
 
-    hasTagByName(name: string) {
+    hasTagByName(name: string): boolean {
         return !!this.tags.find(tag => tag.name === name);
     }
-    hasTagByID(ID: number) {
+    hasTagByID(ID: number): boolean {
         return !!this.tags.find(tag => tag.id === ID);
     }
 
-    downloadZipped(path: string, options: any = { overwrite: true }) {
+    downloadZipped(path: string, options: any = { overwrite: true }): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!options.overwrite && fs.existsSync(path)) return reject(new Error('File already exists.'));
 
             const zip = new JSZip();
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             const doujin = this;
 
             function recurseDownload(pagesLeft: Image[]) {
@@ -71,10 +72,8 @@ export default class Doujin {
                         const fileName = `${pagesLeft[0].pageNumber}.${pagesLeft[0].extension}`;
                         zip.file(fileName, image, { binary: true });
 
-                        /* tslint:disable */
                         if (doujin.apiOptions.isVerbalDownloadEnabled)
                             console.log(`${doujin.doujinId}: Downloaded page ${pagesLeft[0].pageNumber}`);
-                        /* tslint:enable */
 
                         pagesLeft.shift();
                         recurseDownload(pagesLeft);

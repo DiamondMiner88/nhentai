@@ -5,7 +5,7 @@ import { HOST_URL } from './api';
 import { APIDoujin } from './apitypes';
 
 export default class Doujin {
-    readonly doujinId: number;
+    readonly id: number;
     readonly mediaId: number;
     readonly titles: {
         english: string;
@@ -23,7 +23,7 @@ export default class Doujin {
     readonly tags: Tag[];
 
     constructor(book: APIDoujin) {
-        this.doujinId = book.id;
+        this.id = book.id;
         this.mediaId = +book.media_id;
         this.titles = book.title;
         this.scanlator = book.scanlator;

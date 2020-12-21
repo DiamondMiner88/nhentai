@@ -1,8 +1,8 @@
-import { HOST_URL } from './urls';
 import Image from './image';
 import Tag from './tag';
-import * as fs from 'fs';
 import * as JSZip from 'jszip';
+import { HOST_URL } from './api';
+import { APIDoujin } from './apitypes';
 
 export default class Doujin {
     readonly doujinId: number;
@@ -22,9 +22,7 @@ export default class Doujin {
     readonly favorites: number;
     readonly tags: Tag[];
 
-    private readonly apiOptions: any;
-
-    constructor(book: any, apiOptions: any) {
+    constructor(book: APIDoujin) {
         this.doujinId = book.id;
         this.mediaId = +book.media_id;
         this.titles = book.title;
@@ -33,15 +31,10 @@ export default class Doujin {
         this.length = book.num_pages;
         this.favorites = book.num_favorites;
         this.url = `${HOST_URL}/g/${book.id}`;
-        this.pages = book.images.pages.map(
-            (i: Record<string, unknown>, pageNum: number) =>
-                new Image({ ...i, page_number: pageNum + 1 }, this.mediaId, 'page'),
-        );
-        this.cover = new Image(book.images.cover, this.mediaId, 'cover');
-        this.thumbnail = new Image(book.images.thumbnail, this.mediaId, 'thumbnail');
-        this.tags = book.tags.map((tag: any) => new Tag(tag));
-
-        this.apiOptions = apiOptions;
+        this.pages = book.images.pages.map((image, index) => new Image(image, index + 1, this));
+        this.cover = new Image(book.images.cover, 'cover', this);
+        this.thumbnail = new Image(book.images.thumbnail, 'thumbnail', this);
+        this.tags = book.tags.map(tag => new Tag(tag));
     }
 
     hasTagByName(name: string): boolean {
@@ -51,37 +44,30 @@ export default class Doujin {
         return !!this.tags.find(tag => tag.id === ID);
     }
 
-    downloadZipped(path: string, options: any = { overwrite: true }): Promise<void> {
+    fetchAndZip(): Promise<Buffer> {
         return new Promise((resolve, reject) => {
-            if (!options.overwrite && fs.existsSync(path)) return reject(new Error('File already exists.'));
-
             const zip = new JSZip();
-            // eslint-disable-next-line @typescript-eslint/no-this-alias
-            const doujin = this;
 
             function recurseDownload(pagesLeft: Image[]) {
-                if (pagesLeft.length === 0) {
-                    zip.generateAsync({ type: 'nodebuffer' }).then(data => {
-                        const stream = fs.createWriteStream(path, { flags: 'w' });
-                        stream.write(data);
-                        stream.end();
-                        resolve();
-                    });
-                } else {
-                    pagesLeft[0].fetchBuffer().then(image => {
-                        const fileName = `${pagesLeft[0].pageNumber}.${pagesLeft[0].extension}`;
-                        zip.file(fileName, image, { binary: true });
+                if (pagesLeft.length === 0) zip.generateAsync({ type: 'nodebuffer' }).then(data => resolve(data));
+                else {
+                    pagesLeft[0]
+                        .fetch()
+                        .then(image => {
+                            const fileName = `${pagesLeft[0].page_number}.${pagesLeft[0].extension}`;
+                            zip.file(fileName, image, { binary: true });
 
-                        if (doujin.apiOptions.isVerbalDownloadEnabled)
-                            console.log(`${doujin.doujinId}: Downloaded page ${pagesLeft[0].pageNumber}`);
-
-                        pagesLeft.shift();
-                        recurseDownload(pagesLeft);
-                    });
+                            pagesLeft.shift();
+                            recurseDownload(pagesLeft);
+                        })
+                        .catch(error => reject(error));
                 }
             }
 
-            this.cover.fetchBuffer().then(image => zip.file(`cover.${this.cover.extension}`, image, { binary: true }));
+            this.cover
+                .fetch()
+                .then(image => zip.file(`cover.${this.cover.extension}`, image, { binary: true }))
+                .catch(error => reject(error));
             recurseDownload([...this.pages]);
 
             zip.file(`info.json`, JSON.stringify({ ...this, saved_at: new Date() }, null, 4));

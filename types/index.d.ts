@@ -1,41 +1,32 @@
 declare module 'nhentai' {
     export const HOST_URL: string;
     export const IMAGE_URL: string;
-    export const THUMBNAIL_URL: string;
+    export const THUMBS_URL: string;
     export const API_URL: string;
 
     export enum SortMethods {
         RECENT = '',
         POPULAR_ALL_TIME = 'popular',
         POPULAR_THIS_WEEK = 'popular-week',
-        POPULAR_TODAY = 'popular-today',
+        POPULAR_TODAY = 'popular-today'
     }
 
-    /**
-     * @param debug Doesn't do anything yet
-     * @param verbalDownloads Writes updates to console during downloads
-     * @param buildAPIURLs Modify the url to be used for api requests. An example of this is bypassing CORS for APIs that don't have the Any Origin header. Example function:\
-     * `(url) => "https://cors-anywhere.herokuapp.com/" + url`
-     * @param headers Custom headers to always overwrite on API requests
-     */
-    export type APIOptions = {
-        debug: boolean;
-        verbalDownloads: boolean;
-        buildAPIURLs: (url: string) => string;
-        headers: Record<string, string>;
-    };
-
     export class API {
-        options: APIOptions;
+        options: Record<string, never>;
 
-        constructor(options?: APIOptions);
+        constructor(options?: Record<string, never>);
+
+        /**
+         * Checks if a doujins exists
+         * @param doujinID ID of the doujin
+         */
+        doujinExists(doujinID: number | string): Promise<boolean>;
 
         /**
          * Fetch a doujin's info.
          * @param doujinID ID of the doujin to get. Commonly referred to as '6 digit number'.
-         * @returns A parsed Book or rejects if it doesn't exist.
          */
-        fetchDoujin(doujinID: number | string): Promise<Doujin | null>;
+        fetchDoujin(doujinID: number | string): Promise<Doujin>;
 
         /**
          * Search nhentai for any doujin that matches the query in any titles.
@@ -43,21 +34,21 @@ declare module 'nhentai' {
          * @param page Which nhentai page to look on.
          * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
          */
-        search(query: string, page?: string | number, sort?: SortMethods): Promise<SearchResult | null>;
+        search(query: string, page?: string | number, sort?: SortMethods): Promise<SearchResult>;
 
         /**
          * Searches nhentai for any doujins that have this tag.
          * @param tagID ID of the tag.
          * @param page Which nhentai page to look on.
          */
-        searchByTagID(tagID: number | string, page?: string | number): Promise<SearchResult | null>;
+        searchByTagID(tagID: number | string, page?: string | number): Promise<SearchResult>;
 
         /**
          * Find similar doujins.
          * @param doujinID ID of the doujin.
          * @param page Which nhentai page to look on.
          */
-        searchRelated(doujinID: number | string, page?: string | number): Promise<SearchResult | null>;
+        searchRelated(doujinID: number | string, page?: string | number): Promise<SearchResult>;
 
         /**
          * Gets a random doujin by using nhentai's `/random` user endpoint which redirects to a doujin and the url is captured.
@@ -144,36 +135,25 @@ declare module 'nhentai' {
 
         /**
          * Download each image from the api individually and bundle to a zip
-         * @param path Path of the file to save to
-         * @param options Additional options
-         * @param options.overwrite Reject if the file already exists
+         * @returns Buffer of zip
          */
-        downloadZipped(path: string, options?: { overwrite?: boolean }): Promise<void>;
+        fetchAndZip(): Promise<Buffer>;
     }
 
     class Image {
         /**
          * File extention of the image
          */
-        readonly extension: 'jpg' | 'png';
+        readonly extension: string;
         readonly height: number;
         readonly width: number;
         readonly url: string;
-        readonly type: 'page' | 'thumbnail' | 'cover';
+        readonly page_number: number | null;
 
         /**
-         * Fetches the image to a buffer
+         * Fetches the image
          */
-        fetchBuffer(): Promise<Buffer>;
-
-        /**
-         * Download the image to a file
-         * @param targetDir The target directory to save to
-         * @param fileName The file name to save to
-         * @param options Additional options
-         * @param options.overwrite Reject if the file already exists
-         */
-        download(targetDir: string, fileName: string, options?: { overwrite?: boolean }): Promise<void>;
+        fetch(): Promise<Buffer>;
     }
 
     class Tag {
@@ -195,10 +175,6 @@ declare module 'nhentai' {
          * Doujins that were returned from the search.
          */
         readonly doujins: Doujin[];
-        /**
-         * Amount of total doujins returned from the search.
-         */
-        readonly amount: number;
         /**
          * Number of pages that the api searched.
          */

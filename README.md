@@ -2,16 +2,16 @@
   <img width="450" src="./docs/logo.svg">
 </p>
 
-# A simple API wrapper for [nhentai.net](https://nhentai.net)
+#  A library for using the [nhentai.net](https://nhentai.net) API
 
 ### Features:
-- Clean classes of each data type
-- Typescript declaration file with documentation
-- Downloading zip bundles of doujins
+- Search and fetch doujins
+- Downloading pages individually or zipping the whole doujin
+- TypeScript support
 
 ### Installing
 ```
-npm i --save nhentai
+npm install --save nhentai
 ```
 
 ### Usage
@@ -31,19 +31,15 @@ api.fetchDoujin(334430).then(doujin => {
 
     // english, translated, kantai collection, teitoku, yahagi, rosapersica, [etc...]
     doujin.tags.map(tag => tag.name).join(', ');
-
-    // Downloads page 1 to C:/temp/1.[extension]
-    doujin.pages[0].download('C:/temp', '1');
-
-    // Downloads zip-bundled doujin to C:/temp/334430.zip
-    doujin.downloadZipped('C:/temp/334430.zip');
 });
+
 ```
 
 ### Upcoming features
 - Proper documentation
-- nhentai torrent downloads
+- More scraping features
 - User accounts
+- Command line downloading
 
 ### Contributing
-Feel free to make a PR on the repo even if it's for a typo, contributions are welcome.
+Feel free to make a PR even if it's for a typo fix, contributions are welcome.

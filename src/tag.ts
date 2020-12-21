@@ -1,4 +1,5 @@
-import { HOST_URL } from './urls';
+import { HOST_URL } from './api';
+import { APITag } from './apitypes';
 
 export default class Tag {
     readonly id: number;
@@ -7,7 +8,7 @@ export default class Tag {
     readonly url: string;
     readonly count: number;
 
-    constructor(tag: any) {
+    constructor(tag: APITag) {
         this.id = tag.id;
         this.type = tag.type;
         this.name = tag.name;

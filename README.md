@@ -1,12 +1,22 @@
-<p align="center">
-  <img width="450" src="./docs/logo.svg">
-</p>
+<div align="center">
+  <br/>
+  <p>
+    <img width="450" src="./docs/logo.svg">
+  </p>
+  <br />
+  <p>
+    <a href="https://discord.gg/kkcqFZrT52"><img src="https://img.shields.io/discord/775543884503056424?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
+    <a href="https://www.npmjs.com/package/nhentai"><img src="https://img.shields.io/npm/dt/nhentai.svg?maxAge=3600" alt="NPM downloads" /></a>
+    <a href="https://www.npmjs.com/package/nhentai"><img alt="npm" src="https://img.shields.io/npm/v/nhentai"></a>
+    <a href="https://www.npmjs.com/package/nhentai"><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/nhentai"></a>
+  </p>
+</div>
 
-#  A library for using the [nhentai.net](https://nhentai.net) API
+#  A library for interacting with the [nhentai](https://nhentai.net) API
 
 ### Features:
 - Search and fetch doujins
-- Downloading pages individually or zipping the whole doujin
+- Downloading pages individually or zip the whole doujin
 - TypeScript support
 
 ### Installing
@@ -39,7 +49,6 @@ api.fetchDoujin(334430).then(doujin => {
 - Proper documentation
 - More scraping features
 - User accounts
-- Command line downloading
 
 ### Contributing
 Feel free to make a PR even if it's for a typo fix, contributions are welcome.

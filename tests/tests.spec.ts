@@ -41,6 +41,12 @@ describe('fetchDoujin', () => {
     });
 });
 
+describe('fetchHomepage', () => {
+    it('should return a search result', () => {
+        return expect(api.fetchHomepage()).to.eventually.be.an.instanceOf(SearchResult);
+    });
+});
+
 describe('search', () => {
     it('should return a search result', async () => {
         const result: SearchResult = await api.search('METAMORPHOSIS');

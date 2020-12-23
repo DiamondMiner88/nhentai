@@ -53,6 +53,10 @@ export class API {
         });
     }
 
+    fetchHomepage(page: string | number = 1, sort = ''): Promise<SearchResult> {
+        return this.search('*', page, sort);
+    }
+
     search(query: string, page: string | number = 1, sort = ''): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));

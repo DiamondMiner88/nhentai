@@ -65,12 +65,13 @@ export class API {
         });
     }
 
-    searchByTagID(tagID: number | string, page: string | number = 1): Promise<SearchResult> {
+    searchByTagID(tagID: number | string, page: string | number = 1, sort = ''): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
             if (isNaN(+tagID)) return reject(new Error('TagID paramater is not a number'));
 
-            fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}`)
+            const sorting = !!sort ? `&sort=${sort}` : '';
+            fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}${sorting}`)
                 .then(data => data.json())
                 .then(data => resolve(new SearchResult(data)))
                 .catch(error => reject(error));

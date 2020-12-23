@@ -41,7 +41,7 @@ declare module 'nhentai' {
          * @param tagID ID of the tag.
          * @param page Which nhentai page to look on.
          */
-        searchByTagID(tagID: number | string, page?: string | number): Promise<SearchResult>;
+        searchByTagID(tagID: number | string, page?: string | number, sort?: SortMethods): Promise<SearchResult>;
 
         /**
          * Find similar doujins.
@@ -65,7 +65,7 @@ declare module 'nhentai' {
         /**
          * Doujin ID, most commonly referred to as '6 digit code'.
          */
-        readonly doujinId: number;
+        readonly id: number;
         /**
          * Media ID, this is different to Doujin ID and I don't know why it exists.
          */

@@ -3,9 +3,8 @@ import * as chai_as_promised from 'chai-as-promised';
 import 'mocha';
 chaiUse(chai_as_promised);
 
-import { API } from '../src/index';
+import { API, SortMethods, nhentaiAPIError } from '../src/index';
 import Image from '../src/image';
-import Doujin from '../src/Doujin';
 import SearchResult from '../src/search';
 
 const api = new API();
@@ -22,22 +21,21 @@ const api = new API();
 // });
 
 describe('fetchDoujin', () => {
-    it('should return a doujin', async () => {
-        const result: Doujin = await api.fetchDoujin(334430);
-        return expect(result.pages[0]).instanceOf(Image);
+    it('should return a doujin', () => {
+        return expect(api.fetchDoujin(334430)).eventually.be.not.undefined;
     });
     it('should reject if page is not a number', () => {
         return expect(api.fetchDoujin('NaN')).to.be.rejectedWith('DoujinID paramater is not a number.');
     });
     it('should reject if doujin does not exist', () => {
-        return expect(api.fetchDoujin(0)).to.be.rejectedWith('Doujin does not exist.');
+        return expect(api.fetchDoujin(0)).to.eventually.be.undefined;
     });
     it('should reject if doujinID is lower than 0', () => {
         return expect(api.fetchDoujin(-1)).to.be.rejectedWith('DoujinID cannot be lower than 1.');
     });
     it('should return a buffer of the thumbnail', async () => {
         const doujin = await api.fetchDoujin(334430);
-        return expect(doujin.thumbnail.fetch()).to.eventually.be.an.instanceOf(Buffer);
+        return expect(doujin?.thumbnail.fetch()).to.eventually.be.an.instanceOf(Buffer);
     });
 });
 
@@ -58,6 +56,9 @@ describe('searchByTagID', () => {
     it('should return a search result', async () => {
         const result: SearchResult = await api.searchByTagID(8739);
         return expect(result.doujins[0].pages[0]).to.be.an.instanceOf(Image);
+    });
+    it('should catch an api error', () => {
+        return expect(api.searchByTagID(1, 1, 'a')).to.eventually.be.rejectedWith('API returned an error');
     });
 });
 

@@ -26,14 +26,14 @@ declare module 'nhentai' {
          * Fetch a doujin's info.
          * @param doujinID ID of the doujin to get. Commonly referred to as '6 digit number'.
          */
-        fetchDoujin(doujinID: number | string): Promise<Doujin>;
+        fetchDoujin(doujinID: number | string): Promise<Doujin | undefined>;
 
         /**
          * Get the homepage. Alias for `search('*')`
          * @param page Which nhentai page to look on.
          * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
          */
-        fetchHomepage(page?: string | number, sort?: string): Promise<SearchResult>
+        fetchHomepage(page?: string | number, sort?: string): Promise<SearchResult>;
 
         /**
          * Search nhentai for any doujin that matches the query in any titles.

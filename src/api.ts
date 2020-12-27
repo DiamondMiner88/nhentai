@@ -36,7 +36,7 @@ export class API {
         });
     }
 
-    fetchDoujin(doujinID: number | string): Promise<Doujin> {
+    fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
         return new Promise((resolve, reject) => {
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
             if (+doujinID <= -1) return reject(new Error('DoujinID cannot be lower than 1.'));
@@ -45,8 +45,8 @@ export class API {
                 .then(data => data.json())
                 .then(data => {
                     if (data.error) {
-                        if (data.error === 'does not exist') reject(new Error('Doujin does not exist.'));
-                        else reject(new Error(data.error));
+                        if (data.error === 'does not exist') resolve(undefined);
+                        else reject(new nhentaiAPIError(data.error));
                     } else resolve(new Doujin(data));
                 })
                 .catch(error => reject(error));
@@ -64,7 +64,10 @@ export class API {
             const sorting = !!sort ? `&sort=${sort}` : '';
             fetch(`${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`)
                 .then(data => data.json())
-                .then(data => resolve(new SearchResult(data)))
+                .then(data => {
+                    if (data.error) reject(new nhentaiAPIError(data.error));
+                    else resolve(new SearchResult(data));
+                })
                 .catch(error => reject(error));
         });
     }
@@ -77,7 +80,10 @@ export class API {
             const sorting = !!sort ? `&sort=${sort}` : '';
             fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}${sorting}`)
                 .then(data => data.json())
-                .then(data => resolve(new SearchResult(data)))
+                .then(data => {
+                    if (data.error) reject(new nhentaiAPIError(data.error));
+                    else resolve(new SearchResult(data));
+                })
                 .catch(error => reject(error));
         });
     }
@@ -89,7 +95,10 @@ export class API {
 
             fetch(`${API_URL}/gallery/${doujinID}/related`)
                 .then(data => data.json())
-                .then(data => resolve(new SearchResult(data)))
+                .then(data => {
+                    if (data.error) reject(new nhentaiAPIError(data.error));
+                    else resolve(new SearchResult(data));
+                })
                 .catch(error => reject(error));
         });
     }
@@ -110,11 +119,23 @@ export class API {
         return new Promise((resolve, reject) => {
             this.randomDoujinID()
                 .then((doujinID: number) =>
-                    this.fetchDoujin(doujinID)
-                        .then(doujin => resolve(doujin))
-                        .catch(error => reject(error))
+                    this.fetchDoujin(doujinID).then(doujin => {
+                        if (!doujin)
+                            reject(new Error("Random doujin is now not accessible, this shouldn't happen again."));
+                        else resolve(doujin);
+                    })
                 )
                 .catch(error => reject(error));
         });
+    }
+}
+
+class nhentaiAPIError extends Error {
+    response: Record<string, unknown>;
+    constructor(response: Record<string, unknown>) {
+        super('API returned an error');
+        this.response = response;
+        this.name = 'nhentaiAPIError';
+        Error.captureStackTrace(this, nhentaiAPIError);
     }
 }

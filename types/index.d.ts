@@ -12,9 +12,15 @@ declare module 'nhentai' {
     }
 
     export class API {
-        options: Record<string, never>;
+        options: {
+            preserveRaw: boolean;
+        };
 
-        constructor(options?: Record<string, never>);
+        /**
+         * Constuct a new API wrapper.
+         * @param options.preserveRaw Save the raw response to `Doujin#raw`
+         */
+        constructor(options?: { preserveRaw?: boolean });
 
         /**
          * Checks if a doujins exists
@@ -125,6 +131,11 @@ declare module 'nhentai' {
          * This includes language, characters, groups, and regular tags.
          */
         readonly tags: Tag[];
+
+        /**
+         * Raw response from the API
+         */
+        readonly raw: Record<string, unknown>;
 
         /**
          * Search doujin if it has a tag.

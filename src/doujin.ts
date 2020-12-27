@@ -1,7 +1,7 @@
 import Image from './image';
 import Tag from './tag';
 import * as JSZip from 'jszip';
-import { HOST_URL } from './api';
+import { API, HOST_URL } from './api';
 import { APIDoujin } from './apitypes';
 
 export default class Doujin {
@@ -21,8 +21,9 @@ export default class Doujin {
     readonly length: number;
     readonly favorites: number;
     readonly tags: Tag[];
+    readonly raw?: APIDoujin;
 
-    constructor(book: APIDoujin) {
+    constructor(book: APIDoujin, api: API) {
         this.id = book.id;
         this.mediaId = +book.media_id;
         this.titles = book.title;
@@ -35,6 +36,7 @@ export default class Doujin {
         this.cover = new Image(book.images.cover, 'cover', this);
         this.thumbnail = new Image(book.images.thumbnail, 'thumbnail', this);
         this.tags = book.tags.map(tag => new Tag(tag));
+        if (api.options.preserveRaw) this.raw = book;
     }
 
     hasTagByName(name: string): boolean {

@@ -15,9 +15,11 @@ export const THUMBS_URL = 'https://t.nhentai.net';
 export const API_URL = HOST_URL + '/api';
 
 export class API {
-    options: Record<string, never>;
+    options: {
+        preserveRaw: boolean;
+    };
 
-    constructor(options = {}) {
+    constructor(options = { preserveRaw: false }) {
         this.options = options;
     }
 

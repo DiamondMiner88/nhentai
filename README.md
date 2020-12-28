@@ -1,7 +1,7 @@
 <div align="center">
   <br/>
   <p>
-    <img width="450" src="./docs/logo.svg">
+    <img width="450" src="https://gist.githubusercontent.com/DiamondMiner88/50ce07d1f0c354c10e624f495765001a/raw/7c9d51400a9d368d43160a02dd4cbc2538a38c59/logo.svg">
   </p>
   <br />
   <p>
@@ -18,13 +18,14 @@
 - Search and fetch doujins
 - Downloading pages individually or zip the whole doujin
 - TypeScript support
+- [Documentation](https://diamondminer88.github.io/nhentai)
 
 ### Installing
 ```
 npm install --save nhentai
 ```
 
-### Usage
+### Example Usage
 ```js
 const nhentai = require('nhentai');
 const api = new nhentai.API();
@@ -46,8 +47,6 @@ api.fetchDoujin(334430).then(doujin => {
 ```
 
 ### Upcoming features
-- Proper documentation
-- More scraping features
 - User accounts
 
 ### Contributing

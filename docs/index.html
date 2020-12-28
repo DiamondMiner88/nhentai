@@ -1,0 +1,179 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>nhentai</title>
+	<meta name="description" content="Documentation for nhentai">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">nhentai</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>nhentai</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<div align="center">
+					<br/>
+					<p>
+						<img width="450" src="https://gist.githubusercontent.com/DiamondMiner88/50ce07d1f0c354c10e624f495765001a/raw/7c9d51400a9d368d43160a02dd4cbc2538a38c59/logo.svg">
+					</p>
+					<br />
+					<p>
+						<a href="https://discord.gg/kkcqFZrT52"><img src="https://img.shields.io/discord/775543884503056424?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
+						<a href="https://www.npmjs.com/package/nhentai"><img src="https://img.shields.io/npm/dt/nhentai.svg?maxAge=3600" alt="NPM downloads" /></a>
+						<a href="https://www.npmjs.com/package/nhentai"><img alt="npm" src="https://img.shields.io/npm/v/nhentai"></a>
+						<a href="https://www.npmjs.com/package/nhentai"><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/nhentai"></a>
+					</p>
+				</div>
+				<a href="#a-library-for-interacting-with-the-nhentai-api" id="a-library-for-interacting-with-the-nhentai-api" style="color: inherit; text-decoration: none;">
+					<h1>A library for interacting with the <a href="https://nhentai.net">nhentai</a> API</h1>
+				</a>
+				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
+					<h3>Features:</h3>
+				</a>
+				<ul>
+					<li>Search and fetch doujins</li>
+					<li>Downloading pages individually or zip the whole doujin</li>
+					<li>TypeScript support</li>
+					<li><a href="https://diamondminer88.github.io/nhentai">Documentation</a></li>
+				</ul>
+				<a href="#installing" id="installing" style="color: inherit; text-decoration: none;">
+					<h3>Installing</h3>
+				</a>
+				<pre><code><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span><span style="color: #000000"> --</span><span style="color: #001080">save</span><span style="color: #000000"> </span><span style="color: #001080">nhentai</span>
+</code></pre>
+				<a href="#example-usage" id="example-usage" style="color: inherit; text-decoration: none;">
+					<h3>Example Usage</h3>
+				</a>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">nhentai</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;nhentai&#039;</span><span style="color: #000000">);</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">api</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">nhentai</span><span style="color: #000000">.</span><span style="color: #267F99">API</span><span style="color: #000000">();</span>
+
+<span style="color: #001080">api</span><span style="color: #000000">.</span><span style="color: #795E26">fetchDoujin</span><span style="color: #000000">(</span><span style="color: #098658">334430</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">doujin</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First</span>
+<span style="color: #000000">    </span><span style="color: #001080">doujin</span><span style="color: #000000">.</span><span style="color: #001080">titles</span><span style="color: #000000">.</span><span style="color: #001080">pretty</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">    </span><span style="color: #008000">// https://i.nhentai.net/galleries/1767063/1.jpg</span>
+<span style="color: #000000">    </span><span style="color: #001080">doujin</span><span style="color: #000000">.</span><span style="color: #001080">pages</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #001080">url</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">    </span><span style="color: #008000">// https://t.nhentai.net/galleries/1767063/cover.jpg</span>
+<span style="color: #000000">    </span><span style="color: #001080">doujin</span><span style="color: #000000">.</span><span style="color: #001080">cover</span><span style="color: #000000">.</span><span style="color: #001080">url</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">    </span><span style="color: #008000">// english, translated, kantai collection, teitoku, yahagi, rosapersica, [etc...]</span>
+<span style="color: #000000">    </span><span style="color: #001080">doujin</span><span style="color: #000000">.</span><span style="color: #001080">tags</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">tag</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">tag</span><span style="color: #000000">.</span><span style="color: #001080">name</span><span style="color: #000000">).</span><span style="color: #795E26">join</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;, &#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+
+</code></pre>
+				<a href="#upcoming-features" id="upcoming-features" style="color: inherit; text-decoration: none;">
+					<h3>Upcoming features</h3>
+				</a>
+				<ul>
+					<li>User accounts</li>
+				</ul>
+				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+					<h3>Contributing</h3>
+				</a>
+				<p>Feel free to make a PR even if it&#39;s for a typo fix, contributions are welcome.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/api.html">api</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/doujin.html">doujin</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/image.html">image</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/index.html">index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/search.html">search</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/tag.html">tag</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

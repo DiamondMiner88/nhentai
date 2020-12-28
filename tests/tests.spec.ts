@@ -3,7 +3,7 @@ import * as chai_as_promised from 'chai-as-promised';
 import 'mocha';
 chaiUse(chai_as_promised);
 
-import { API, SortMethods, nhentaiAPIError } from '../src/index';
+import { API } from '../src/index';
 import Image from '../src/image';
 import SearchResult from '../src/search';
 

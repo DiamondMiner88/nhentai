@@ -49,7 +49,7 @@ export class API {
                     if (data.error) {
                         if (data.error === 'does not exist') resolve(undefined);
                         else reject(new nhentaiAPIError(data.error));
-                    } else resolve(new Doujin(data));
+                    } else resolve(new Doujin(data, this));
                 })
                 .catch(error => reject(error));
         });
@@ -68,7 +68,7 @@ export class API {
                 .then(data => data.json())
                 .then(data => {
                     if (data.error) reject(new nhentaiAPIError(data.error));
-                    else resolve(new SearchResult(data));
+                    else resolve(new SearchResult(data, this));
                 })
                 .catch(error => reject(error));
         });
@@ -84,7 +84,7 @@ export class API {
                 .then(data => data.json())
                 .then(data => {
                     if (data.error) reject(new nhentaiAPIError(data.error));
-                    else resolve(new SearchResult(data));
+                    else resolve(new SearchResult(data, this));
                 })
                 .catch(error => reject(error));
         });
@@ -99,7 +99,7 @@ export class API {
                 .then(data => data.json())
                 .then(data => {
                     if (data.error) reject(new nhentaiAPIError(data.error));
-                    else resolve(new SearchResult(data));
+                    else resolve(new SearchResult(data, this));
                 })
                 .catch(error => reject(error));
         });

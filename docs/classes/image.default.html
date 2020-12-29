@@ -112,19 +112,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new default<span class="tsd-signature-symbol">(</span>image<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">APIImage</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, doujin<span class="tsd-signature-symbol">: </span><a href="doujin.default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="image.default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a></li>
+						<li class="tsd-signature tsd-kind-icon">new default<span class="tsd-signature-symbol">(</span>image<span class="tsd-signature-symbol">: </span><a href="../interfaces/api.apiimage.html" class="tsd-signature-type" data-tsd-kind="Interface">APIImage</a>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, doujin<span class="tsd-signature-symbol">: </span><a href="doujin.default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="image.default.html" class="tsd-signature-type" data-tsd-kind="Class">default</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L11">image.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L29">image.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>image: <span class="tsd-signature-type">APIImage</span></h5>
+									<h5>image: <a href="../interfaces/api.apiimage.html" class="tsd-signature-type" data-tsd-kind="Interface">APIImage</a></h5>
 								</li>
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
@@ -146,9 +146,14 @@
 					<div class="tsd-signature tsd-kind-icon">extension<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L7">image.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L9">image.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>File extension</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="height" class="tsd-anchor"></a>
@@ -156,9 +161,14 @@
 					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L8">image.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L14">image.ts:14</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Height in pixels</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="page_number" class="tsd-anchor"></a>
@@ -166,9 +176,14 @@
 					<div class="tsd-signature tsd-kind-icon">page_<wbr>number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L11">image.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L29">image.ts:29</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Page number if this is a page. If it is not, then its null and either a cover or thumbnail</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="url" class="tsd-anchor"></a>
@@ -176,9 +191,14 @@
 					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L10">image.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L24">image.ts:24</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Full image url</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="width" class="tsd-anchor"></a>
@@ -186,9 +206,14 @@
 					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L9">image.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L19">image.ts:19</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Width in pixels</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -203,9 +228,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L23">image.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L44">image.ts:44</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Fetches the image</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -220,13 +250,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/67c629e/src/image.ts#L32">image.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/eabcf6d/src/image.ts#L58">image.ts:58</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Converts an images <code>t</code> paramater to a file extension<br>Only 3 are known so far</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>extension: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Raw type from the api</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">&quot;png&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;jpg&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;gif&quot;</span></h4>
@@ -316,6 +354,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 		</div>
 	</div>

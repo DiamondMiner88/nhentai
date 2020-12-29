@@ -18,7 +18,7 @@
 - Search and fetch doujins
 - Downloading pages individually or zip the whole doujin
 - TypeScript support
-- [Documentation](https://diamondminer88.github.io/nhentai)
+- [Documentation](https://diamondminer88.github.io/nhentai/index.html)
 
 ### Installing
 ```

@@ -42,11 +42,22 @@ export interface APISearchResult {
     per_page: number;
 }
 
-
 export enum SortMethods {
+    /**
+     * Sort by when uploaded
+     */
     RECENT = '',
+    /**
+     * Sort by amount of favorites
+     */
     POPULAR_ALL_TIME = 'popular',
+    /**
+     * Sort by amount of favorites gained in the last 7 days
+     */
     POPULAR_THIS_WEEK = 'popular-week',
+    /**
+     * Sort by amount of favorites gained in the last 24 hours
+     */
     POPULAR_TODAY = 'popular-today'
 }
 
@@ -61,15 +72,15 @@ export class API {
     };
 
     /**
-     * Constuct a new API wrapper.
-     * @param options.preserveRaw Save the raw response to `Doujin#raw`
+     * Constuct a new API wrapper
+     * @param options.preserveRaw Save the raw doujin to `Doujin#raw`
      */
     constructor(options = { preserveRaw: false }) {
         this.options = options;
     }
 
     /**
-     * Checks if a doujins exists
+     * Check if a doujin exists
      * @param doujinID ID of the doujin
      */
     doujinExists(doujinID: number | string): Promise<boolean> {
@@ -88,8 +99,8 @@ export class API {
     }
 
     /**
-     * Fetch a doujin's info.
-     * @param doujinID ID of the doujin to get. Commonly referred to as '6 digit number'.
+     * Fetch a doujin
+     * @param doujinID ID of the doujin. Commonly known as as a '6 digit number'
      */
     fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
         return new Promise((resolve, reject) => {
@@ -109,19 +120,14 @@ export class API {
     }
 
     /**
-     * Get the homepage. Alias for `search('*')`
-     * @param page Which nhentai page to look on.
-     * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
+     * Get doujins shown on the homepage. Alias for `search('*', [...])`
      */
     fetchHomepage(page: string | number = 1, sort = ''): Promise<SearchResult> {
         return this.search('*', page, sort);
     }
 
     /**
-     * Search nhentai for any doujin that matches the query in any titles.
-     * @param query String to match against titles.
-     * @param page Which nhentai page to look on.
-     * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
+     * Search nhentai for any doujin that matches the query in any titles
      */
     search(query: string, page: string | number = 1, sort = ''): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
@@ -139,9 +145,8 @@ export class API {
     }
 
     /**
-     * Searches nhentai for any doujins that have this tag.
-     * @param tagID ID of the tag.
-     * @param page Which nhentai page to look on.
+     * Searches nhentai for doujins that have this tag
+     * @param tagID ID of the tag
      */
     searchByTagID(tagID: number | string, page: string | number = 1, sort = ''): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
@@ -160,9 +165,8 @@ export class API {
     }
 
     /**
-     * Find similar doujins.
-     * @param doujinID ID of the doujin.
-     * @param page Which nhentai page to look on.
+     * Find similar doujins
+     * @param doujinID ID of the doujin
      */
     searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
@@ -180,7 +184,7 @@ export class API {
     }
 
     /**
-     * Gets a random doujin by using nhentai's `/random` user endpoint which redirects to a doujin and the url is captured.
+     * Get a random doujin by using nhentai's `/random` endpoint which redirects to a doujin and the url is captured.
      */
     randomDoujinID(): Promise<number> {
         return new Promise((resolve, reject) => {
@@ -195,7 +199,7 @@ export class API {
     }
 
     /**
-     * Gets a random doujin using `randomDoujinID` and `fetchDoujin`
+     * Gets a random doujin using `randomDoujinID()` and `fetchDoujin()`
      */
     randomDoujin(): Promise<Doujin> {
         return new Promise((resolve, reject) => {

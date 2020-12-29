@@ -20,6 +20,8 @@ const api = new API();
 //     });
 // });
 
+api.fetchDoujin(334430).then(doujin => console.log(doujin?.titles));
+
 describe('fetchDoujin', () => {
     it('should return a doujin', () => {
         return expect(api.fetchDoujin(334430)).eventually.be.not.undefined;

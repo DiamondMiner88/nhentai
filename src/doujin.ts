@@ -4,20 +4,20 @@ import { API, HOST_URL, APIDoujin } from './api';
 
 export default class Doujin {
     /**
-     * Doujin ID, most commonly referred to as '6 digit code'.
+     * ID of the doujin. Commonly known as as a '6 digit number'
      */
     readonly id: number;
 
     /**
-     * Media ID, this is different to Doujin ID and I don't know why it exists.
+     * Media ID, this is not the doujin id
      */
     readonly mediaId: number;
 
     /**
      * All the titles that the doujin has.
-     * @param english Example: [ShindoLA] METAMORPHOSIS (Complete) [English]
-     * @param japanese Example: [REN] 夫が寝ている隣で襲われて…～私、あなたの上司にハメられてます～【合冊版】 1巻
-     * @param pretty Example: METAMORPHOSIS
+     * @param english Example: (C92) [Rosapersica (Ichinomiya)] Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First (Kantai Collection -KanColle-) [English] [Spicaworks]
+     * @param japanese Example: (C92) [Rosapersica (一ノ宮)] 軽巡矢矧は恋をした。上 (艦隊これくしょん -艦これ-) [英訳]
+     * @param pretty Example: Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First
      */
     readonly titles: {
         english: string;
@@ -25,44 +25,32 @@ export default class Doujin {
         pretty: string;
     };
 
-    /**
-     * Array of all the pages in order.
-     */
     readonly pages: Image[];
 
     /**
-     * Cover image of the doujin.
+     * Cover image of the doujin
      */
     readonly cover: Image;
 
     /**
-     * Similar to `cover` except this one is lower quality and is shown on browsing results.
+     * Similar to `cover` except this one is lower quality and is shown only while browsing results
      */
     readonly thumbnail: Image;
 
     /**
-     * Non-API url to the doujin
+     * User url
      */
     readonly url: string;
 
     /**
-     * Scanlator, if one exists. Otherwise just a blank string.
+     * Scanlator if one exists, otherwise a blank string
      */
     readonly scanlator: string;
 
-    /**
-     * Date when the doujin was upload.
-     */
     readonly uploadDate: Date;
 
-    /**
-     * Amount of pages in the doujin.
-     */
     readonly length: number;
 
-    /**
-     * Amount of 'favorites' on the doujin
-     */
     readonly favorites: number;
 
     /**
@@ -92,20 +80,10 @@ export default class Doujin {
         if (api.options.preserveRaw) this.raw = book;
     }
 
-    /**
-     * Search doujin if it has a tag.
-     * @param name Name of tag.
-     * @returns true if doujin contains a matching tag.
-     */
     hasTagByName(name: string): boolean {
         return !!this.tags.find(tag => tag.name === name);
     }
 
-    /**
-     * Search doujin if it has a tag.
-     * @param ID ID of the tag.
-     * @returns true if doujin contains a matching tag.
-     */
     hasTagByID(ID: number): boolean {
         return !!this.tags.find(tag => tag.id === ID);
     }

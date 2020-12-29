@@ -4,16 +4,28 @@ import { THUMBS_URL, IMAGE_URL, APIImage } from './api';
 
 export default class Image {
     /**
-     * File extention of the image
+     * File extension
      */
     readonly extension: string;
 
+    /**
+     * Height in pixels
+     */
     readonly height: number;
 
+    /**
+     * Width in pixels
+     */
     readonly width: number;
 
+    /**
+     * Full image url
+     */
     readonly url: string;
 
+    /**
+     * Page number if this is a page. If it is not, then its null and either a cover or thumbnail
+     */
     readonly page_number: number | null = null;
 
     constructor(image: APIImage, name: string | number, doujin: Doujin) {
@@ -38,6 +50,11 @@ export default class Image {
         });
     }
 
+    /**
+     * Converts an images `t` paramater to a file extension\
+     * Only 3 are known so far
+     * @param extension Raw type from the api
+     */
     private static extensionConvert(extension: string) {
         switch (extension) {
             case 'p':

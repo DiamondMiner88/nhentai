@@ -45,34 +45,4 @@ export default class Doujin {
     hasTagByID(ID: number): boolean {
         return !!this.tags.find(tag => tag.id === ID);
     }
-
-    fetchAndZip(): Promise<Buffer> {
-        return new Promise((resolve, reject) => {
-            const zip = new JSZip();
-
-            function recurseDownload(pagesLeft: Image[]) {
-                if (pagesLeft.length === 0) zip.generateAsync({ type: 'nodebuffer' }).then(data => resolve(data));
-                else {
-                    pagesLeft[0]
-                        .fetch()
-                        .then(image => {
-                            const fileName = `${pagesLeft[0].page_number}.${pagesLeft[0].extension}`;
-                            zip.file(fileName, image, { binary: true });
-
-                            pagesLeft.shift();
-                            recurseDownload(pagesLeft);
-                        })
-                        .catch(error => reject(error));
-                }
-            }
-
-            this.cover
-                .fetch()
-                .then(image => zip.file(`cover.${this.cover.extension}`, image, { binary: true }))
-                .catch(error => reject(error));
-            recurseDownload([...this.pages]);
-
-            zip.file(`info.json`, JSON.stringify({ ...this, saved_at: new Date() }, null, 4));
-        });
-    }
 }

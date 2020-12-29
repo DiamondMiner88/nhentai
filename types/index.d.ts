@@ -150,12 +150,6 @@ declare module 'nhentai' {
          * @returns true if doujin contains a matching tag.
          */
         hasTagByID(ID: number): boolean;
-
-        /**
-         * Download each image from the api individually and bundle to a zip
-         * @returns Buffer of zip
-         */
-        fetchAndZip(): Promise<Buffer>;
     }
 
     class Image {

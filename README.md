@@ -16,7 +16,7 @@
 
 ### Features:
 - Search and fetch doujins
-- Downloading pages individually or zip the whole doujin
+- Downloading pages
 - TypeScript support
 - [Documentation](https://diamondminer88.github.io/nhentai/index.html)
 

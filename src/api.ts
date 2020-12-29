@@ -2,6 +2,47 @@ import fetch from 'node-fetch';
 import Doujin from './doujin';
 import SearchResult from './search';
 
+export interface APIDoujin {
+    id: number;
+    media_id: string;
+    title: {
+        english: string;
+        japanese: string;
+        pretty: string;
+    };
+    images: {
+        pages: APIImage[];
+        cover: APIImage;
+        thumbnail: APIImage;
+    };
+    scanlator: string;
+    upload_date: number;
+    tags: APITag[];
+    num_pages: number;
+    num_favorites: number;
+}
+
+export interface APITag {
+    id: number;
+    type: 'tag' | 'category' | 'artist' | 'parody' | 'character' | 'group' | 'language';
+    name: string;
+    url: string;
+    count: number;
+}
+
+export interface APIImage {
+    t: 'g' | 'j' | 'p';
+    w: number;
+    h: number;
+}
+
+export interface APISearchResult {
+    result: APIDoujin[];
+    num_pages: number;
+    per_page: number;
+}
+
+
 export enum SortMethods {
     RECENT = '',
     POPULAR_ALL_TIME = 'popular',
@@ -19,10 +60,18 @@ export class API {
         preserveRaw: boolean;
     };
 
+    /**
+     * Constuct a new API wrapper.
+     * @param options.preserveRaw Save the raw response to `Doujin#raw`
+     */
     constructor(options = { preserveRaw: false }) {
         this.options = options;
     }
 
+    /**
+     * Checks if a doujins exists
+     * @param doujinID ID of the doujin
+     */
     doujinExists(doujinID: number | string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
@@ -38,6 +87,10 @@ export class API {
         });
     }
 
+    /**
+     * Fetch a doujin's info.
+     * @param doujinID ID of the doujin to get. Commonly referred to as '6 digit number'.
+     */
     fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
         return new Promise((resolve, reject) => {
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
@@ -55,10 +108,21 @@ export class API {
         });
     }
 
+    /**
+     * Get the homepage. Alias for `search('*')`
+     * @param page Which nhentai page to look on.
+     * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
+     */
     fetchHomepage(page: string | number = 1, sort = ''): Promise<SearchResult> {
         return this.search('*', page, sort);
     }
 
+    /**
+     * Search nhentai for any doujin that matches the query in any titles.
+     * @param query String to match against titles.
+     * @param page Which nhentai page to look on.
+     * @param sort How you want to sort the results. If blank sorted by most recently uploaded, otherwise by amount of favorites it with optional limitators like most popular today.
+     */
     search(query: string, page: string | number = 1, sort = ''): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
@@ -74,6 +138,11 @@ export class API {
         });
     }
 
+    /**
+     * Searches nhentai for any doujins that have this tag.
+     * @param tagID ID of the tag.
+     * @param page Which nhentai page to look on.
+     */
     searchByTagID(tagID: number | string, page: string | number = 1, sort = ''): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
@@ -90,6 +159,11 @@ export class API {
         });
     }
 
+    /**
+     * Find similar doujins.
+     * @param doujinID ID of the doujin.
+     * @param page Which nhentai page to look on.
+     */
     searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult> {
         return new Promise((resolve, reject) => {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
@@ -105,6 +179,9 @@ export class API {
         });
     }
 
+    /**
+     * Gets a random doujin by using nhentai's `/random` user endpoint which redirects to a doujin and the url is captured.
+     */
     randomDoujinID(): Promise<number> {
         return new Promise((resolve, reject) => {
             fetch(`${HOST_URL}/random`, { method: 'HEAD' })
@@ -117,6 +194,9 @@ export class API {
         });
     }
 
+    /**
+     * Gets a random doujin using `randomDoujinID` and `fetchDoujin`
+     */
     randomDoujin(): Promise<Doujin> {
         return new Promise((resolve, reject) => {
             this.randomDoujinID()

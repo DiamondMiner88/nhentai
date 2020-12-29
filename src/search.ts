@@ -1,10 +1,20 @@
 import Doujin from './doujin';
-import { APISearchResult } from './apitypes';
-import { API } from './api';
+import { API, APISearchResult } from './api';
 
 export default class SearchResult {
+    /**
+     * Doujins that were returned from the search.
+     */
     readonly doujins: Doujin[];
+
+    /**
+     * Number of pages that the api searched.
+     */
     readonly numPages: number;
+
+    /**
+     * Number of doujins per page the api used.
+     */
     readonly doujinsPerPage: number;
 
     constructor(searchresult: APISearchResult, api: API) {

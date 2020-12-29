@@ -3,7 +3,7 @@
     "version": "2.0.0",
     "description": "A library for interacting with the nhentai API",
     "main": "lib/index.js",
-    "types": "types/index.d.ts",
+    "types": "lib/index.d.ts",
     "scripts": {
         "test": "mocha -t 10000 -r ts-node/register tests/*.spec.ts",
         "lint": "eslint -c .eslintrc --ext .ts src",
@@ -53,7 +53,6 @@
         "url": "https://github.com/DiamondMiner88/nhentai/issues"
     },
     "files": [
-        "lib/**/*",
-        "types/index.d.ts"
+        "lib/**/*"
     ]
 }

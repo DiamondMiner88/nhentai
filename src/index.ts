@@ -1,1 +1,1 @@
-export * from './api';
+export { SortMethods, API } from './api';

@@ -1,13 +1,19 @@
 import fetch from 'node-fetch';
 import Doujin from './doujin';
-import { THUMBS_URL, IMAGE_URL } from './api';
-import { APIImage } from './apitypes';
+import { THUMBS_URL, IMAGE_URL, APIImage } from './api';
 
 export default class Image {
+    /**
+     * File extention of the image
+     */
     readonly extension: string;
+
     readonly height: number;
+
     readonly width: number;
+
     readonly url: string;
+
     readonly page_number: number | null = null;
 
     constructor(image: APIImage, name: string | number, doujin: Doujin) {
@@ -16,10 +22,13 @@ export default class Image {
         this.width = image.w;
         const parsedName = Number(name);
         this.url = `${isNaN(parsedName) ? THUMBS_URL : IMAGE_URL}/galleries/${doujin.mediaId}/${name}.${
-            this.extension  
+            this.extension
         }`;
     }
 
+    /**
+     * Fetches the image
+     */
     fetch(): Promise<Buffer> {
         return new Promise((resolve, reject) => {
             fetch(this.url)

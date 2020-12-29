@@ -1,6 +1,5 @@
 import Image from './image';
 import Tag from './tag';
-import * as JSZip from 'jszip';
 import { API, HOST_URL } from './api';
 import { APIDoujin } from './apitypes';
 

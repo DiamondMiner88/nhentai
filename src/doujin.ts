@@ -64,20 +64,20 @@ export default class Doujin {
      */
     readonly raw?: APIDoujin;
 
-    constructor(book: APIDoujin, api: API) {
-        this.id = book.id;
-        this.mediaId = +book.media_id;
-        this.titles = book.title;
-        this.scanlator = book.scanlator;
-        this.uploadDate = new Date(book.upload_date * 1000);
-        this.length = book.num_pages;
-        this.favorites = book.num_favorites;
-        this.url = `${HOST_URL}/g/${book.id}`;
-        this.pages = book.images.pages.map((image, index) => new Image(image, index + 1, this));
-        this.cover = new Image(book.images.cover, 'cover', this);
-        this.thumbnail = new Image(book.images.thumbnail, 'thumbnail', this);
-        this.tags = book.tags.map(tag => new Tag(tag));
-        if (api.options.preserveRaw) this.raw = book;
+    constructor(raw: APIDoujin, api: API) {
+        this.id = raw.id;
+        this.mediaId = +raw.media_id;
+        this.titles = raw.title;
+        this.scanlator = raw.scanlator;
+        this.uploadDate = new Date(raw.upload_date * 1000);
+        this.length = raw.num_pages;
+        this.favorites = raw.num_favorites;
+        this.url = `${HOST_URL}/g/${raw.id}`;
+        this.pages = raw.images.pages.map((image, index) => new Image(image, index + 1, this));
+        this.cover = new Image(raw.images.cover, 'cover', this);
+        this.thumbnail = new Image(raw.images.thumbnail, 'thumbnail', this);
+        this.tags = raw.tags.map(tag => new Tag(tag));
+        if (api.options.preserveRaw) this.raw = raw;
     }
 
     hasTagByName(name: string): boolean {

@@ -7,19 +7,19 @@ export default class Tag {
     readonly url: string;
     readonly count: number;
 
-    constructor(tag: APITag) {
-        this.id = tag.id;
-        this.type = tag.type;
-        this.name = tag.name;
+    constructor(raw: APITag) {
+        this.id = raw.id;
+        this.type = raw.type;
+        this.name = raw.name;
 
         /**
          * Tag URL to view more doujins with this tag
          */
-        this.url = HOST_URL + tag.url;
+        this.url = HOST_URL + raw.url;
 
         /**
          * Amount of doujins that have this tag
          */
-        this.count = tag.count;
+        this.count = raw.count;
     }
 }

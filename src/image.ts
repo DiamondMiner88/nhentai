@@ -28,10 +28,10 @@ export default class Image {
      */
     readonly page_number: number | null = null;
 
-    constructor(image: APIImage, name: string | number, doujin: Doujin) {
-        this.extension = Image.extensionConvert(image.t);
-        this.height = image.h;
-        this.width = image.w;
+    constructor(raw: APIImage, name: string | number, doujin: Doujin) {
+        this.extension = Image.extensionConvert(raw.t);
+        this.height = raw.h;
+        this.width = raw.w;
         const parsedName = Number(name);
         this.url = `${isNaN(parsedName) ? THUMBS_URL : IMAGE_URL}/galleries/${doujin.mediaId}/${name}.${
             this.extension

@@ -107,12 +107,13 @@ export class API {
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
             if (+doujinID <= -1) return reject(new Error('DoujinID cannot be lower than 1.'));
 
-            fetch(`${API_URL}/gallery/${doujinID}`)
+            const url = `${API_URL}/gallery/${doujinID}`;
+            fetch(url)
                 .then(data => data.json())
                 .then(data => {
                     if (data.error) {
                         if (data.error === 'does not exist') resolve(undefined);
-                        else reject(new nhentaiAPIError(data.error));
+                        else reject(new nhentaiAPIError(data, url));
                     } else resolve(new Doujin(data, this));
                 })
                 .catch(error => reject(error));
@@ -134,10 +135,11 @@ export class API {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
 
             const sorting = !!sort ? `&sort=${sort}` : '';
-            fetch(`${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`)
+            const url = `${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`;
+            fetch(url)
                 .then(data => data.json())
                 .then(data => {
-                    if (data.error) reject(new nhentaiAPIError(data.error));
+                    if (data.error) reject(new nhentaiAPIError(data, url));
                     else resolve(new SearchResult(data, this));
                 })
                 .catch(error => reject(error));
@@ -154,10 +156,11 @@ export class API {
             if (isNaN(+tagID)) return reject(new Error('TagID paramater is not a number'));
 
             const sorting = !!sort ? `&sort=${sort}` : '';
-            fetch(`${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}${sorting}`)
+            const url = `${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}${sorting}`;
+            fetch(url)
                 .then(data => data.json())
                 .then(data => {
-                    if (data.error) reject(new nhentaiAPIError(data.error));
+                    if (data.error) reject(new nhentaiAPIError(data, url));
                     else resolve(new SearchResult(data, this));
                 })
                 .catch(error => reject(error));
@@ -173,10 +176,11 @@ export class API {
             if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
             if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number'));
 
-            fetch(`${API_URL}/gallery/${doujinID}/related`)
+            const url = `${API_URL}/gallery/${doujinID}/related`;
+            fetch(url)
                 .then(data => data.json())
                 .then(data => {
-                    if (data.error) reject(new nhentaiAPIError(data.error));
+                    if (data.error) reject(new nhentaiAPIError(data, url));
                     else resolve(new SearchResult(data, this));
                 })
                 .catch(error => reject(error));
@@ -218,9 +222,11 @@ export class API {
 
 class nhentaiAPIError extends Error {
     response: Record<string, unknown>;
-    constructor(response: Record<string, unknown>) {
+    url: string;
+    constructor(response: Record<string, unknown>, url: string) {
         super('API returned an error');
         this.response = response;
+        this.url = url;
         this.name = 'nhentaiAPIError';
         Error.captureStackTrace(this, nhentaiAPIError);
     }

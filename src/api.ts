@@ -220,7 +220,7 @@ export class API {
     }
 }
 
-class nhentaiAPIError extends Error {
+export class nhentaiAPIError extends Error {
     response: Record<string, unknown>;
     url: string;
     constructor(response: Record<string, unknown>, url: string) {

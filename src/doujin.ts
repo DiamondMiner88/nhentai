@@ -1,5 +1,5 @@
 import Image from './image';
-import Tag from './tag';
+import { TagManager } from './tag';
 import { API, HOST_URL, APIDoujin } from './api';
 
 export default class Doujin {
@@ -53,11 +53,7 @@ export default class Doujin {
 
     readonly favorites: number;
 
-    /**
-     * Every single type of tag on the doujin.
-     * This includes language, characters, groups, and regular tags.
-     */
-    readonly tags: Tag[];
+    readonly tags: TagManager;
 
     /**
      * Raw response from the API
@@ -76,15 +72,15 @@ export default class Doujin {
         this.pages = raw.images.pages.map((image, index) => new Image(image, index + 1, this));
         this.cover = new Image(raw.images.cover, 'cover', this);
         this.thumbnail = new Image(raw.images.thumbnail, 'thumbnail', this);
-        this.tags = raw.tags.map(tag => new Tag(tag));
+        this.tags = new TagManager(raw.tags);
         if (api.options.preserveRaw) this.raw = raw;
     }
 
     hasTagByName(name: string): boolean {
-        return !!this.tags.find(tag => tag.name === name);
+        return !!this.tags.all.find(tag => tag.name === name);
     }
 
     hasTagByID(ID: number): boolean {
-        return !!this.tags.find(tag => tag.id === ID);
+        return !!this.tags.all.find(tag => tag.id === ID);
     }
 }

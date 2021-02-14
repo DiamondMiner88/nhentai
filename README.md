@@ -9,6 +9,7 @@
     <a href="https://www.npmjs.com/package/nhentai"><img src="https://img.shields.io/npm/dt/nhentai.svg?maxAge=3600" alt="NPM downloads" /></a>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm" src="https://img.shields.io/npm/v/nhentai"></a>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/nhentai"></a>
+    <a href="https://hits.dwyl.com/DiamondMiner88/nhentai"><img alt ="HitCount" src="https://hits.dwyl.com/DiamondMiner88/nhentai.svg"></a>
   </p>
 </div>
 
@@ -45,9 +46,6 @@ api.fetchDoujin(334430).then(doujin => {
 });
 
 ```
-
-### Upcoming features
-- User accounts
 
 ### Contributing
 Feel free to make a PR even if it's for a typo fix, contributions are welcome.

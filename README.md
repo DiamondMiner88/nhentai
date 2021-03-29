@@ -9,24 +9,19 @@
     <a href="https://www.npmjs.com/package/nhentai"><img src="https://img.shields.io/npm/dt/nhentai.svg?maxAge=3600" alt="NPM downloads" /></a>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm" src="https://img.shields.io/npm/v/nhentai"></a>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/nhentai"></a>
-    <a href="https://hits.dwyl.com/DiamondMiner88/nhentai"><img alt ="HitCount" src="https://hits.dwyl.com/DiamondMiner88/nhentai.svg"></a>
   </p>
 </div>
 
 #  A library for interacting with the [nhentai](https://nhentai.net) API
 
-### Features:
-- Search and fetch doujins
-- Downloading pages
-- TypeScript support
 - [Documentation](https://diamondminer88.github.io/nhentai/index.html)
 
 ### Installing
 ```
-npm install --save nhentai
+npm install nhentai
 ```
 
-### Example Usage
+### Usage
 ```js
 const nhentai = require('nhentai');
 const api = new nhentai.API();
@@ -42,10 +37,7 @@ api.fetchDoujin(334430).then(doujin => {
     doujin.cover.url;
 
     // english, translated, kantai collection, teitoku, yahagi, rosapersica, [etc...]
-    doujin.tags.map(tag => tag.name).join(', ');
+    doujin.tags.all.map(tag => tag.name).join(', ');
 });
 
 ```
-
-### Contributing
-Feel free to make a PR even if it's for a typo fix, contributions are welcome.

@@ -1,7 +1,7 @@
-import Doujin from './doujin';
+import { Doujin } from './doujin';
 import { API, APISearchResult } from './api';
 
-export default class SearchResult {
+export class SearchResult {
     readonly doujins: Doujin[];
 
     /**

@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import Doujin from './doujin';
-import SearchResult from './search';
+import { Doujin } from './doujin';
+import { SearchResult } from './search';
 
 export interface APIDoujin {
     id: number;
@@ -42,9 +42,10 @@ export interface APISearchResult {
     per_page: number;
 }
 
+// TODO: confirm that popular actually sorts by favorites
 export enum SortMethods {
     /**
-     * Sort by when uploaded
+     * Sort by recently published
      */
     RECENT = '',
     /**

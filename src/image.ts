@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import Doujin from './doujin';
+import { Doujin } from './doujin';
 import { THUMBS_URL, IMAGE_URL, APIImage } from './api';
 
-export default class Image {
+export class Image {
     /**
      * File extension
      */

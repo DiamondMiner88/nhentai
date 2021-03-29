@@ -1,12 +1,9 @@
 import { use as chaiUse, expect } from 'chai';
 import * as chai_as_promised from 'chai-as-promised';
 import 'mocha';
-import Image from '../src/image';
 chaiUse(chai_as_promised);
 
-import { API } from '../src/index';
-import SearchResult from '../src/search';
-
+import { API, Image, SearchResult } from '../src/index';
 const api = new API();
 
 describe('doujinExists', () => {

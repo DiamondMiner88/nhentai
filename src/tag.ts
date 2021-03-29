@@ -1,6 +1,6 @@
 import { HOST_URL, APITag } from './api';
 
-export default class Tag {
+export class Tag {
     readonly id: number;
     readonly type: string;
     readonly name: string;

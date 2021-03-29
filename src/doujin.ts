@@ -1,8 +1,8 @@
-import Image from './image';
+import { Image } from './image';
 import { TagManager } from './tag';
 import { API, HOST_URL, APIDoujin } from './api';
 
-export default class Doujin {
+export class Doujin {
     /**
      * ID of the doujin. Commonly known as as a '6 digit number'
      */

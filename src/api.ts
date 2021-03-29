@@ -45,7 +45,7 @@ export interface APISearchResult {
 // TODO: confirm that popular actually sorts by favorites
 export enum SortMethods {
     /**
-     * Sort by recently published
+     * Sort by most recently published
      */
     RECENT = '',
     /**
@@ -68,15 +68,11 @@ export const THUMBS_URL = 'https://t.nhentai.net';
 export const API_URL = HOST_URL + '/api';
 
 export class API {
-    options: {
-        preserveRaw: boolean;
-    };
-
     /**
      * Constuct a new API wrapper
      * @param options.preserveRaw Save the raw doujin to `Doujin#raw`
      */
-    constructor(options = { preserveRaw: false }) {
+    constructor(public options = { preserveRaw: false }) {
         this.options = options;
     }
 
@@ -101,7 +97,7 @@ export class API {
 
     /**
      * Fetch a doujin
-     * @param doujinID ID of the doujin. Commonly known as as a '6 digit number'
+     * @param doujinID ID of the doujin.
      */
     fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
         return new Promise((resolve, reject) => {

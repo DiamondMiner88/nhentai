@@ -9,7 +9,7 @@ export class Doujin {
     readonly id: number;
 
     /**
-     * Media ID, this is not the doujin id
+     * Media ID, this is ***not*** the same as the doujin id
      */
     readonly mediaId: number;
 
@@ -33,17 +33,17 @@ export class Doujin {
     readonly cover: Image;
 
     /**
-     * Similar to `cover` except this one is lower quality and is shown only while browsing results
+     * The cover but low resolution shown when browsing results.
      */
     readonly thumbnail: Image;
 
     /**
-     * User url
+     * Content url
      */
     readonly url: string;
 
     /**
-     * Scanlator if one exists, otherwise a blank string
+     * Scanlator if exists, otherwise a blank string
      */
     readonly scanlator: string;
 
@@ -60,6 +60,11 @@ export class Doujin {
      */
     readonly raw?: APIDoujin;
 
+    /**
+     * Internal constructor. Use only if you know what you are doing.
+     * @param raw Raw data
+     * @param api Instance of the api
+     */
     constructor(raw: APIDoujin, api: API) {
         this.id = raw.id;
         this.mediaId = +raw.media_id;

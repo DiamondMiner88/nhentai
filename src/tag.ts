@@ -30,6 +30,10 @@ export class TagManager {
      */
     readonly all: Tag[];
 
+    /**
+     *Internal constructor. Use only if you know what you are doing.
+     * @param raw Raw data
+     */
     constructor(raw: APITag[]) {
         this.all = raw.map(tag => new Tag(tag));
     }
@@ -47,8 +51,8 @@ export class TagManager {
     getByType = (type: string): Tag[] => this.all.filter(tag => tag.type === type);
 
     /**
-     * All tags with their type being 'tag'. Confusing, I know.\
-     * If you want all the tags use `all`
+     * All tags with their type being `tag`. Confusing, I know.\
+     * If you want all the properties of a doujin such as the languages use the `all` property.
      */
     get tags(): Tag[] {
         return this.getByType('tag');

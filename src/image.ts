@@ -24,10 +24,16 @@ export class Image {
     readonly url: string;
 
     /**
-     * Page number if this is a page. If it is not, then its null and either a cover or thumbnail
+     * Page number or null when this is a thumbnail/cover.
      */
     readonly page_number: number | null = null;
 
+    /**
+     * Internal constructor. Use only if you know what you are doing.
+     * @param raw Raw data
+     * @param name Indicates page number or thumbnail / cover
+     * @param doujin Parent doujin instance
+     */
     constructor(raw: APIImage, name: string | number, doujin: Doujin) {
         this.extension = Image.extensionConvert(raw.t);
         this.height = raw.h;
@@ -51,8 +57,7 @@ export class Image {
     }
 
     /**
-     * Converts an images `t` paramater to a file extension\
-     * Only 3 are known so far
+     * Converts an images `t` paramater to a file extension
      * @param extension Raw type from the api
      */
     private static extensionConvert(extension: string) {

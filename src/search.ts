@@ -1,5 +1,6 @@
 import { Doujin } from './doujin';
-import { API, APISearchResult } from './api';
+import { API } from './api';
+import { APISearchResult } from './apitypes';
 
 export class SearchResult {
     readonly doujins: Doujin[];

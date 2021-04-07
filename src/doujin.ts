@@ -1,6 +1,7 @@
 import { Image } from './image';
 import { TagManager } from './tag';
-import { API, HOST_URL, APIDoujin } from './api';
+import { API, HOST_URL } from './api';
+import { APIDoujin } from './apitypes';
 
 export class Doujin {
     /**

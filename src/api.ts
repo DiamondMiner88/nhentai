@@ -2,46 +2,6 @@ import fetch from 'node-fetch';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
 
-export interface APIDoujin {
-    id: number;
-    media_id: string;
-    title: {
-        english: string;
-        japanese: string;
-        pretty: string;
-    };
-    images: {
-        pages: APIImage[];
-        cover: APIImage;
-        thumbnail: APIImage;
-    };
-    scanlator: string;
-    upload_date: number;
-    tags: APITag[];
-    num_pages: number;
-    num_favorites: number;
-}
-
-export interface APITag {
-    id: number;
-    type: 'tag' | 'category' | 'artist' | 'parody' | 'character' | 'group' | 'language';
-    name: string;
-    url: string;
-    count: number;
-}
-
-export interface APIImage {
-    t: 'g' | 'j' | 'p';
-    w: number;
-    h: number;
-}
-
-export interface APISearchResult {
-    result: APIDoujin[];
-    num_pages: number;
-    per_page: number;
-}
-
 // TODO: confirm that popular actually sorts by favorites
 export enum SortMethods {
     /**
@@ -72,9 +32,7 @@ export class API {
      * Constuct a new API wrapper
      * @param options.preserveRaw Save the raw doujin to `Doujin#raw`
      */
-    constructor(public options = { preserveRaw: false }) {
-        this.options = options;
-    }
+    constructor(public options = { preserveRaw: false }) {}
 
     /**
      * Check if a doujin exists

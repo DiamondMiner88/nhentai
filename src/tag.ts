@@ -1,4 +1,5 @@
-import { HOST_URL, APITag } from './api';
+import { HOST_URL } from './api';
+import { APITag } from './apitypes';
 
 export class Tag {
     readonly id: number;

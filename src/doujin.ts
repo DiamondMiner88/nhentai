@@ -47,7 +47,15 @@ export class Doujin {
      */
     readonly scanlator: string;
 
+    /**
+     * The time it was published to the site
+     */
     readonly uploadDate: Date;
+
+    /**
+     * The timestamp of when it was published to the site
+     */
+    readonly uploadTimestamp: number;
 
     readonly length: number;
 
@@ -71,6 +79,7 @@ export class Doujin {
         this.titles = raw.title;
         this.scanlator = raw.scanlator;
         this.uploadDate = new Date(raw.upload_date * 1000);
+        this.uploadTimestamp = raw.upload_date;
         this.length = raw.num_pages;
         this.favorites = raw.num_favorites;
         this.url = `${HOST_URL}/g/${raw.id}`;

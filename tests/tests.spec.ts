@@ -20,13 +20,13 @@ describe('fetchDoujin', () => {
         return expect(api.fetchDoujin(334430)).eventually.be.not.undefined;
     });
     it('rejects when page is not number', () => {
-        return expect(api.fetchDoujin('NaN')).to.be.rejectedWith('DoujinID paramater is not a number.');
+        return expect(api.fetchDoujin('NaN')).to.be.rejected;
     });
     it('non-existing doujin fetch returns undefined', () => {
-        return expect(api.fetchDoujin(0)).to.eventually.be.undefined;
+        return expect(api.fetchDoujin(9999999)).to.eventually.be.undefined;
     });
     it('rejects when doujin id is <1', () => {
-        return expect(api.fetchDoujin(-1)).to.be.rejectedWith('DoujinID cannot be lower than 1.');
+        return expect(api.fetchDoujin(-1)).to.be.rejected;
     });
     it('return thumb image buffer', async () => {
         const doujin = await api.fetchDoujin(334430);
@@ -42,18 +42,19 @@ describe('fetchHomepage', () => {
 
 describe('search', () => {
     it('returns search results', async () => {
-        const result: SearchResult = await api.search('METAMORPHOSIS');
+        const result = await api.search('METAMORPHOSIS');
         return expect(result.doujins[0].pages[0]).to.be.an.instanceOf(Image);
     });
 });
 
 describe('searchByTagID', () => {
     it('returns search results', async () => {
-        const result: SearchResult = await api.searchByTagID(8739);
+        const result = await api.searchByTagID(8739);
         return expect(result.doujins[0].pages[0]).to.be.an.instanceOf(Image);
     });
-    it('reject because of api error', () => {
-        return expect(api.searchByTagID(1, 1, 'a')).to.eventually.be.rejectedWith('API returned an error');
+    it('reject when sort method is invalid', () => {
+        // @ts-expect-error tests
+        return expect(api.searchByTagID(1, 1, 'a')).to.eventually.be.rejected;
     });
 });
 

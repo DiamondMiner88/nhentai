@@ -5,7 +5,7 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "test": "mocha -t 10000 -r ts-node/register tests/*.spec.ts",
+        "test": "mocha -t 20000 -r ts-node/register tests/*.spec.ts",
         "lint": "eslint -c .eslintrc --ext .ts src",
         "build": "rm -rf lib/** && tsc",
         "docs": "typedoc --out docs src"

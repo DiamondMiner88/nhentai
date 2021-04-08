@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { APIDoujin, APISearchResult } from './apitypes';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
 
@@ -22,6 +23,8 @@ export enum SortMethods {
     POPULAR_TODAY = 'popular-today'
 }
 
+const SortValues = Object.values(SortMethods);
+
 export const HOST_URL = 'https://nhentai.net';
 export const IMAGE_URL = 'https://i.nhentai.net';
 export const THUMBS_URL = 'https://t.nhentai.net';
@@ -35,21 +38,31 @@ export class API {
     constructor(public options = { preserveRaw: false }) {}
 
     /**
+     * Wrapper over node-fetch that checks for api errors
+     * @param path API path
+     * @returns parsed JSON
+     */
+    private async fetch(path: string): Promise<unknown> {
+        return fetch(API_URL + path)
+            .then(res => res.json())
+            .then(json => {
+                if (json.error) throw new nhentaiAPIError(json, path);
+                else return json;
+            });
+    }
+
+    /**
      * Check if a doujin exists
      * @param doujinID ID of the doujin
      */
     doujinExists(doujinID: number | string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
-            if (+doujinID <= -1) return reject(new Error('DoujinID cannot be lower than 1.'));
+        doujinID = Number(doujinID);
+        if (isNaN(doujinID)) throw new TypeError('id is not a parsable number');
+        if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
 
-            fetch(`${API_URL}/gallery/${doujinID}`, { method: 'HEAD' })
-                .then(res => {
-                    if (res.status !== 200 && res.status !== 404)
-                        reject(new Error(`Response code is not a 404 or 200. (${res.status})`));
-                    else resolve(res.status === 200);
-                })
-                .catch(error => reject(error));
+        return fetch(`${API_URL}/gallery/${doujinID}`, { method: 'HEAD' }).then(res => {
+            if (![200, 404].includes(res.status)) throw new Error(`Status code is not a 404 or 200. (${res.status})`);
+            return res.status === 200;
         });
     }
 
@@ -57,121 +70,83 @@ export class API {
      * Fetch a doujin
      * @param doujinID ID of the doujin.
      */
-    fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
-        return new Promise((resolve, reject) => {
-            if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number.'));
-            if (+doujinID <= -1) return reject(new Error('DoujinID cannot be lower than 1.'));
+    async fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
+        doujinID = Number(doujinID);
+        if (isNaN(doujinID)) throw new TypeError('id is not a parsable number');
+        if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
 
-            const url = `${API_URL}/gallery/${doujinID}`;
-            fetch(url)
-                .then(data => data.json())
-                .then(data => {
-                    if (data.error) {
-                        if (data.error === 'does not exist') resolve(undefined);
-                        else reject(new nhentaiAPIError(data, url));
-                    } else resolve(new Doujin(data, this));
-                })
-                .catch(error => reject(error));
-        });
+        return this.fetch(`/gallery/${doujinID}`)
+            .then(data => new Doujin(data as APIDoujin, this))
+            .catch(err => {
+                if (err.message === 'does not exist') return undefined;
+            });
     }
 
     /**
      * Get doujins shown on the homepage. Alias for `search('*', [...])`
      */
-    fetchHomepage(page: string | number = 1, sort = ''): Promise<SearchResult> {
+    fetchHomepage(page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
         return this.search('*', page, sort);
     }
 
     /**
      * Search nhentai for any doujin that matches the query in any titles
      */
-    search(query: string, page: string | number = 1, sort = ''): Promise<SearchResult> {
-        return new Promise((resolve, reject) => {
-            if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
+    async search(query: string, page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
+        if (isNaN(Number(page))) throw new TypeError('page is not a parsable number');
 
-            const sorting = !!sort ? `&sort=${sort}` : '';
-            const url = `${API_URL}/galleries/search?query=${query}&page=${page}${sorting}`;
-            fetch(url)
-                .then(data => data.json())
-                .then(data => {
-                    if (data.error) reject(new nhentaiAPIError(data, url));
-                    else resolve(new SearchResult(data, this));
-                })
-                .catch(error => reject(error));
-        });
+        const res = await this.fetch(`/galleries/search?query=${query}&page=${page}&sort=${sort}`);
+        return new SearchResult(res as APISearchResult, this);
     }
 
     /**
      * Searches nhentai for doujins that have this tag
      * @param tagID ID of the tag
      */
-    searchByTagID(tagID: number | string, page: string | number = 1, sort = ''): Promise<SearchResult> {
-        return new Promise((resolve, reject) => {
-            if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
-            if (isNaN(+tagID)) return reject(new Error('TagID paramater is not a number'));
+    async searchByTagID(
+        tagID: number | string,
+        page: string | number = 1,
+        sort = SortMethods.RECENT
+    ): Promise<SearchResult> {
+        if (isNaN(Number(tagID))) throw new TypeError('page is not a parsable number');
+        if (isNaN(Number(page))) throw new TypeError('tagId is not a parsable number');
+        if (!SortValues.includes(sort)) throw new TypeError('sort method is not one of the available');
 
-            const sorting = !!sort ? `&sort=${sort}` : '';
-            const url = `${API_URL}/galleries/tagged?tag_id=${tagID}&page=${page}${sorting}`;
-            fetch(url)
-                .then(data => data.json())
-                .then(data => {
-                    if (data.error) reject(new nhentaiAPIError(data, url));
-                    else resolve(new SearchResult(data, this));
-                })
-                .catch(error => reject(error));
-        });
+        const res = await this.fetch(`/galleries/tagged?tag_id=${tagID}&page=${page}${sort ? `&sort=${sort}` : ''}`);
+        return new SearchResult(res as APISearchResult, this);
     }
 
     /**
      * Find similar doujins
      * @param doujinID ID of the doujin
      */
-    searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult> {
-        return new Promise((resolve, reject) => {
-            if (isNaN(+page)) return reject(new Error('Page paramater is not a number.'));
-            if (isNaN(+doujinID)) return reject(new Error('DoujinID paramater is not a number'));
+    async searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult> {
+        if (isNaN(Number(doujinID))) throw new TypeError('id is not a parsable number');
+        if (isNaN(Number(page))) throw new TypeError('page is not a parsable number');
 
-            const url = `${API_URL}/gallery/${doujinID}/related`;
-            fetch(url)
-                .then(data => data.json())
-                .then(data => {
-                    if (data.error) reject(new nhentaiAPIError(data, url));
-                    else resolve(new SearchResult(data, this));
-                })
-                .catch(error => reject(error));
-        });
+        const res = await this.fetch(`/gallery/${doujinID}/related`);
+        return new SearchResult(res as APISearchResult, this);
     }
 
     /**
      * Get a random doujin by using nhentai's `/random` endpoint which redirects to a doujin and the url is captured.
      */
-    randomDoujinID(): Promise<number> {
-        return new Promise((resolve, reject) => {
-            fetch(`${HOST_URL}/random`, { method: 'HEAD' })
-                .then(data => {
-                    const match = data.url.match(/https?:\/\/nhentai\.net\/g\/(\d{1,7})\//);
-                    if (!match || !match[1]) return reject(new Error('Could not find doujin id in redirect url.'));
-                    resolve(+match[1]);
-                })
-                .catch(error => reject(error));
+    async randomDoujinID(): Promise<number> {
+        return fetch(`${HOST_URL}/random`, { method: 'HEAD' }).then(data => {
+            const match = data.url.match(/https?:\/\/nhentai\.net\/g\/(\d{1,7})\//);
+            if (!match || !match[1]) throw new Error('Could not find doujin id in redirect url.');
+            return Number(match[1]);
         });
     }
 
     /**
      * Gets a random doujin using `randomDoujinID()` and `fetchDoujin()`
      */
-    randomDoujin(): Promise<Doujin> {
-        return new Promise((resolve, reject) => {
-            this.randomDoujinID()
-                .then((doujinID: number) =>
-                    this.fetchDoujin(doujinID).then(doujin => {
-                        if (!doujin)
-                            reject(new Error("Random doujin is now not accessible, this shouldn't happen again."));
-                        else resolve(doujin);
-                    })
-                )
-                .catch(error => reject(error));
-        });
+    async randomDoujin(): Promise<Doujin> {
+        const id = await this.randomDoujinID();
+        const doujin = await this.fetchDoujin(id);
+        if (!doujin) throw new Error('Failed to retrieve doujin that exists. Please try again.');
+        return doujin;
     }
 }
 
@@ -179,7 +154,7 @@ export class nhentaiAPIError extends Error {
     response: Record<string, unknown>;
     url: string;
     constructor(response: Record<string, unknown>, url: string) {
-        super('API returned an error');
+        super(JSON.stringify(response));
         this.response = response;
         this.url = url;
         this.name = 'nhentaiAPIError';

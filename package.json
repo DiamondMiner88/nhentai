@@ -1,6 +1,6 @@
 {
     "name": "nhentai",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "A library for interacting with the nhentai API",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",

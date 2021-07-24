@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { Doujin } from './doujin';
-import { THUMBS_URL, IMAGE_URL } from './api';
+import { THUMBS_URL, IMAGE_URL, API } from './api';
 import { APIImage } from './apitypes';
 
 export class Image {
@@ -30,12 +30,17 @@ export class Image {
     readonly page_number: number | null = null;
 
     /**
+     * Raw data from the API
+     */
+    readonly raw?: APIImage;
+
+    /**
      * Internal constructor. Use only if you know what you are doing.
      * @param raw Raw data
      * @param name Indicates page number or thumbnail / cover
      * @param doujin Parent doujin instance
      */
-    constructor(raw: APIImage, name: string | number, doujin: Doujin) {
+    constructor(raw: APIImage, name: string | number, doujin: Doujin, api: API) {
         this.extension = Image.extensionConvert(raw.t);
         this.height = raw.h;
         this.width = raw.w;
@@ -43,6 +48,7 @@ export class Image {
         this.url = `${isNaN(parsedName) ? THUMBS_URL : IMAGE_URL}/galleries/${doujin.mediaId}/${name}.${
             this.extension
         }`;
+        if (api.options.preserveRaw) this.raw = raw;
     }
 
     /**

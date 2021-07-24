@@ -84,9 +84,9 @@ export class Doujin {
         this.length = raw.num_pages;
         this.favorites = raw.num_favorites;
         this.url = `${HOST_URL}/g/${raw.id}`;
-        this.pages = raw.images.pages.map((image, index) => new Image(image, index + 1, this));
-        this.cover = new Image(raw.images.cover, 'cover', this);
-        this.thumbnail = new Image(raw.images.thumbnail, 'thumb', this);
+        this.pages = raw.images.pages.map((image, index) => new Image(image, index + 1, this, api));
+        this.cover = new Image(raw.images.cover, 'cover', this, api);
+        this.thumbnail = new Image(raw.images.thumbnail, 'thumb', this, api);
         this.tags = new TagManager(raw.tags);
         if (api.options.preserveRaw) this.raw = raw;
     }

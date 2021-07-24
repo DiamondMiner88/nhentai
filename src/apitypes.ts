@@ -18,9 +18,11 @@ export interface APIDoujin {
     num_favorites: number;
 }
 
+export type APITagType = 'tag' | 'group' | 'language' | 'artist' | 'character' | 'parody' | 'category';
+
 export interface APITag {
     id: number;
-    type: 'tag' | 'category' | 'artist' | 'parody' | 'character' | 'group' | 'language';
+    type: APITagType;
     name: string;
     url: string;
     count: number;

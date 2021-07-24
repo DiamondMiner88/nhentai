@@ -1,9 +1,10 @@
 import { HOST_URL } from './api';
-import { APITag } from './apitypes';
+import { APITag, APITagType } from './apitypes';
+
 
 export class Tag {
     readonly id: number;
-    readonly type: string;
+    readonly type: APITagType;
     readonly name: string;
     readonly url: string;
     readonly count: number;
@@ -49,7 +50,7 @@ export class TagManager {
      * Get all tags with a certain type
      * @param type Tag type
      */
-    getByType = (type: string): Tag[] => this.all.filter(tag => tag.type === type);
+    getByType = (type: APITagType): Tag[] => this.all.filter(tag => tag.type === type);
 
     /**
      * All tags with their type being `tag`. Confusing, I know.\

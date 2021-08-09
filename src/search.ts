@@ -1,5 +1,4 @@
 import { Doujin } from './doujin';
-import { API } from './api';
 import { APISearchResult } from './apitypes';
 
 export class SearchResult {
@@ -18,19 +17,12 @@ export class SearchResult {
     readonly doujinsPerPage: number;
 
     /**
-     * Raw response from the API
-     */
-    readonly raw?: APISearchResult;
-
-    /**
      * Internal constructor. Use only if you know what you are doing.
      * @param raw Raw data
-     * @param api Instance of the api
      */
-    constructor(raw: APISearchResult, api: API) {
-        this.doujins = raw.result.map(doujin => new Doujin(doujin, api));
+    constructor(raw: APISearchResult) {
+        this.doujins = raw.result.map(doujin => new Doujin(doujin));
         this.numPages = raw.num_pages;
         this.doujinsPerPage = raw.per_page;
-        if (api.options.preserveRaw) this.raw = raw;
     }
 }

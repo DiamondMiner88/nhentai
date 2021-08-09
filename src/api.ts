@@ -33,9 +33,8 @@ export const API_URL = HOST_URL + '/api';
 export class API {
     /**
      * Constuct a new API wrapper
-     * @param options.preserveRaw Save the raw doujin to `Doujin#raw`
      */
-    constructor(public options = { preserveRaw: false }) {}
+    constructor(public options = {}) {}
 
     /**
      * Wrapper over node-fetch that checks for api errors
@@ -76,7 +75,7 @@ export class API {
         if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
 
         return this.fetch(`/gallery/${doujinID}`)
-            .then(data => new Doujin(data as APIDoujin, this))
+            .then(data => new Doujin(data as APIDoujin))
             .catch(err => {
                 if (err.message === 'does not exist') return undefined;
             });
@@ -96,7 +95,7 @@ export class API {
         if (isNaN(Number(page))) throw new TypeError('page is not a parsable number');
 
         const res = await this.fetch(`/galleries/search?query=${query}&page=${page}&sort=${sort}`);
-        return new SearchResult(res as APISearchResult, this);
+        return new SearchResult(res as APISearchResult);
     }
 
     /**
@@ -113,7 +112,7 @@ export class API {
         if (!SortValues.includes(sort)) throw new TypeError('sort method is not one of the available');
 
         const res = await this.fetch(`/galleries/tagged?tag_id=${tagID}&page=${page}${sort ? `&sort=${sort}` : ''}`);
-        return new SearchResult(res as APISearchResult, this);
+        return new SearchResult(res as APISearchResult);
     }
 
     /**
@@ -125,7 +124,7 @@ export class API {
         if (isNaN(Number(page))) throw new TypeError('page is not a parsable number');
 
         const res = await this.fetch(`/gallery/${doujinID}/related`);
-        return new SearchResult(res as APISearchResult, this);
+        return new SearchResult(res as APISearchResult);
     }
 
     /**

@@ -1,6 +1,6 @@
 import { Image } from './image';
 import { TagManager } from './tag';
-import { API, HOST_URL } from './api';
+import { HOST_URL } from './api';
 import { APIDoujin } from './apitypes';
 
 export class Doujin {
@@ -65,16 +65,17 @@ export class Doujin {
     readonly tags: TagManager;
 
     /**
-     * Raw response from the API
+     * Raw data from the API
      */
-    readonly raw?: APIDoujin;
+    readonly raw: APIDoujin;
 
     /**
      * Internal constructor. Use only if you know what you are doing.
      * @param raw Raw data
      * @param api Instance of the api
      */
-    constructor(raw: APIDoujin, api: API) {
+    constructor(raw: APIDoujin) {
+        this.raw = raw;
         this.id = raw.id;
         this.mediaId = +raw.media_id;
         this.titles = raw.title;
@@ -84,11 +85,10 @@ export class Doujin {
         this.length = raw.num_pages;
         this.favorites = raw.num_favorites;
         this.url = `${HOST_URL}/g/${raw.id}`;
-        this.pages = raw.images.pages.map((image, index) => new Image(image, index + 1, this, api));
-        this.cover = new Image(raw.images.cover, 'cover', this, api);
-        this.thumbnail = new Image(raw.images.thumbnail, 'thumb', this, api);
+        this.pages = raw.images.pages.map((image, index) => new Image(image, index + 1, this));
+        this.cover = new Image(raw.images.cover, 'cover', this);
+        this.thumbnail = new Image(raw.images.thumbnail, 'thumb', this);
         this.tags = new TagManager(raw.tags);
-        if (api.options.preserveRaw) this.raw = raw;
     }
 
     hasTagByName(name: string): boolean {

@@ -56,12 +56,19 @@ export class API {
      */
     doujinExists(doujinID: number | string): Promise<boolean> {
         doujinID = Number(doujinID);
-        if (isNaN(doujinID)) throw new TypeError('id is not a parsable number');
+
+        if (isNaN(doujinID)) throw new TypeError('id is not a number');
         if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
 
         return fetch(`${API_URL}/gallery/${doujinID}`, { method: 'HEAD' }).then(res => {
-            if (![200, 404].includes(res.status)) throw new Error(`Status code is not a 404 or 200. (${res.status})`);
-            return res.status === 200;
+            switch (res.status) {
+                case 200:
+                    return true;
+                case 404:
+                    return false;
+                default:
+                    throw new Error(`Status code is not a 404 or 200. (${res.status})`);
+            }
         });
     }
 
@@ -71,7 +78,8 @@ export class API {
      */
     async fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
         doujinID = Number(doujinID);
-        if (isNaN(doujinID)) throw new TypeError('id is not a parsable number');
+
+        if (isNaN(doujinID)) throw new TypeError('id is not a number');
         if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
 
         return this.fetch(`/gallery/${doujinID}`)
@@ -92,7 +100,10 @@ export class API {
      * Search nhentai for any doujin that matches the query in any titles
      */
     async search(query: string, page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
-        if (isNaN(Number(page))) throw new TypeError('page is not a parsable number');
+        page = Number(page);
+
+        if (isNaN(page)) throw new TypeError('page is not a number');
+        if (!SortValues.includes(sort)) throw new TypeError('sort method is not valid');
 
         const res = await this.fetch(`/galleries/search?query=${query}&page=${page}&sort=${sort}`);
         return new SearchResult(res as APISearchResult);
@@ -107,9 +118,12 @@ export class API {
         page: string | number = 1,
         sort = SortMethods.RECENT
     ): Promise<SearchResult> {
-        if (isNaN(Number(tagID))) throw new TypeError('page is not a parsable number');
-        if (isNaN(Number(page))) throw new TypeError('tagId is not a parsable number');
-        if (!SortValues.includes(sort)) throw new TypeError('sort method is not one of the available');
+        tagID = Number(tagID);
+        page = Number(page);
+
+        if (isNaN(tagID)) throw new TypeError('tagId is not a number');
+        if (isNaN(page)) throw new TypeError('page is not a number');
+        if (!SortValues.includes(sort)) throw new TypeError('sort method is not valid');
 
         const res = await this.fetch(`/galleries/tagged?tag_id=${tagID}&page=${page}${sort ? `&sort=${sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
@@ -120,8 +134,11 @@ export class API {
      * @param doujinID ID of the doujin
      */
     async searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult> {
-        if (isNaN(Number(doujinID))) throw new TypeError('id is not a parsable number');
-        if (isNaN(Number(page))) throw new TypeError('page is not a parsable number');
+        doujinID = Number(doujinID);
+        page = Number(page);
+
+        if (isNaN(doujinID)) throw new TypeError('doujinID is not a number');
+        if (isNaN(page)) throw new TypeError('page is not a number');
 
         const res = await this.fetch(`/gallery/${doujinID}/related`);
         return new SearchResult(res as APISearchResult);

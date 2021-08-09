@@ -76,7 +76,7 @@ export class API {
      * Fetch a doujin
      * @param doujinID ID of the doujin.
      */
-    async fetchDoujin(doujinID: number | string): Promise<Doujin | undefined> {
+    async fetchDoujin(doujinID: number | string): Promise<Doujin | null> {
         doujinID = Number(doujinID);
 
         if (isNaN(doujinID)) throw new TypeError('id is not a number');
@@ -85,7 +85,8 @@ export class API {
         return this.fetch(`/gallery/${doujinID}`)
             .then(data => new Doujin(data as APIDoujin))
             .catch(err => {
-                if (err.message === 'does not exist') return undefined;
+                if (err.response?.error === 'does not exist') return null;
+                throw err;
             });
     }
 

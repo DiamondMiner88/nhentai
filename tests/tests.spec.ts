@@ -1,77 +1,151 @@
-import { use as chaiUse, expect } from 'chai';
+import { use as chaiUse, expect, assert } from 'chai';
+// TODO: dont use chai as promised
 import * as chai_as_promised from 'chai-as-promised';
-import 'mocha';
 chaiUse(chai_as_promised);
+import { suite, test } from 'mocha';
 
-import { API, Image, SearchResult } from '../src/index';
-const api = new API();
+import { API, Doujin, Image, SearchResult, SortMethods } from '../src/index';
 
-describe('doujinExists', () => {
-    it("return false when doujin doesn't exist", () => {
-        return expect(api.doujinExists(9999999)).to.eventually.be.false;
+suite('API', () => {
+    const lib = new API();
+
+    suite('doujinExists', async () => {
+        test('try invalid doujin', async () => {
+            const result = await lib.doujinExists(9999999);
+            assert(!result);
+        });
+        test('try valid doujin', async () => {
+            const result = await lib.doujinExists(334430);
+            assert(result);
+        });
     });
-    it('return true when doujin exists', () => {
-        return expect(api.doujinExists(334430)).eventually.to.be.true;
+
+    suite('fetchDoujin', () => {
+        test('returns a doujin', async () => {
+            const result = await lib.fetchDoujin(334430);
+            assert(result instanceof Doujin);
+        });
+        test('rejects when page is not number', () => {
+            return expect(lib.fetchDoujin('NaN')).to.be.rejected;
+        });
+        test('invalid doujin returns null', async () => {
+            const result = await lib.fetchDoujin(9999999);
+            assert(result === null);
+        });
+        test('rejects when doujin id is <1', () => {
+            return expect(lib.fetchDoujin(-1)).to.be.rejected;
+        });
+    });
+
+    test('fetchHomepage returns search results', async () => {
+        const result = await lib.fetchHomepage();
+        assert(result instanceof SearchResult);
+    });
+
+    suite('search', () => {
+        test('returns search results', async () => {
+            const result = await lib.search('METAMORPHOSIS');
+            assert(result.doujins[0].pages[0] instanceof Image);
+        });
+
+        test('different pages', async () => {
+            const result = await lib.search('hololive', 2);
+            assert(result.doujins[0].pages[0] instanceof Image);
+        });
+
+        test('different sort method', async () => {
+            const result = await lib.search('hololive', 1, SortMethods.POPULAR_ALL_TIME);
+            assert(result.doujins[0].pages[0] instanceof Image);
+        });
+    });
+
+    suite('searchByTagID', () => {
+        test('returns search results', async () => {
+            const result = await lib.searchByTagID(8739);
+            assert(result.doujins[0].pages[0] instanceof Image);
+        });
+        test('reject when sort method is invalid', () => {
+            // @ts-expect-error tests
+            return expect(lib.searchByTagID(1, 1, 'a')).to.eventually.be.rejected;
+        });
+    });
+
+    suite('searchRelated', () => {
+        test('returns search results', async () => {
+            const result = await lib.searchRelated(334430);
+            assert(result.doujins[0].pages[0] instanceof Image);
+        });
+    });
+
+    test('randomDoujinID', async () => {
+        const result = await lib.randomDoujinID();
+        assert(typeof result === 'number');
+    });
+
+    test('randomDoujin', async () => {
+        const doujin = await lib.randomDoujin();
+        assert(doujin instanceof Doujin);
     });
 });
 
-describe('fetchDoujin', () => {
-    it('returns a doujin', () => {
-        return expect(api.fetchDoujin(334430)).eventually.be.not.undefined;
+suite('Doujin', () => {
+    const imgRegex = /^https:\/\/[ti]\.nhentai\.net\/galleries\/\d{1,7}\/(?:\d{0,4}|thumb|cover)\.(?:gif|jpg|png)$/;
+    const lib = new API();
+
+    let doujin: Doujin;
+
+    before(async () => {
+        const result = await lib.fetchDoujin(1);
+        if (!result) throw Error('Failed to fetch doujin');
+        doujin = result;
     });
-    it('rejects when page is not number', () => {
-        return expect(api.fetchDoujin('NaN')).to.be.rejected;
+
+    test('has pages', () => {
+        assert(doujin.pages?.length > 0);
     });
-    it('non-existing doujin fetch returns undefined', () => {
-        return expect(api.fetchDoujin(9999999)).to.eventually.be.undefined;
+
+    test('cover has valid url', () => {
+        assert(imgRegex.test(doujin.cover.url));
     });
-    it('rejects when doujin id is <1', () => {
-        return expect(api.fetchDoujin(-1)).to.be.rejected;
+
+    test('thumbnail has valid url', () => {
+        assert(imgRegex.test(doujin.thumbnail.url));
     });
-    it('return thumb image buffer', async () => {
-        const doujin = await api.fetchDoujin(334430);
-        return expect(doujin?.thumbnail.fetch()).to.eventually.be.an.instanceOf(Buffer);
+
+    test('1st page has valid url', () => {
+        assert(imgRegex.test(doujin.pages[0].url));
+    });
+
+    test('Doujin#raw', () => {
+        assert(!!doujin.raw);
     });
 });
 
-describe('fetchHomepage', () => {
-    it('returns search results', () => {
-        return expect(api.fetchHomepage()).to.eventually.be.an.instanceOf(SearchResult);
-    });
-});
+suite('Image', () => {
+    const lib = new API();
 
-describe('search', () => {
-    it('returns search results', async () => {
-        const result = await api.search('METAMORPHOSIS');
-        return expect(result.doujins[0].pages[0]).to.be.an.instanceOf(Image);
-    });
-});
+    let doujin: Doujin;
 
-describe('searchByTagID', () => {
-    it('returns search results', async () => {
-        const result = await api.searchByTagID(8739);
-        return expect(result.doujins[0].pages[0]).to.be.an.instanceOf(Image);
+    before(async () => {
+        const result = await lib.fetchDoujin(334430);
+        if (!result) throw Error('Failed to fetch doujin');
+        doujin = result;
     });
-    it('reject when sort method is invalid', () => {
-        // @ts-expect-error tests
-        return expect(api.searchByTagID(1, 1, 'a')).to.eventually.be.rejected;
-    });
-});
 
-describe('searchRelated', () => {
-    it('returns search results', () => {
-        return expect(api.searchRelated(334430)).to.eventually.be.an.instanceOf(SearchResult);
+    test('fetch data to Buffer', async () => {
+        const buffer = await doujin.cover.fetch();
+        assert(buffer instanceof Buffer);
     });
-});
 
-describe('randomDoujinID', () => {
-    it('returns a doujin id', () => {
-        return expect(api.randomDoujinID()).to.eventually.be.a('number');
+    test('has valid extention', () => {
+        assert(['png', 'jpg', 'gif'].includes(doujin.cover.extension));
     });
-});
 
-describe('randomDoujin', () => {
-    it('returns a doujin', () => {
-        return expect(api.randomDoujin()).to.eventually.be.fulfilled;
+    test('has valid height', () => {
+        assert(typeof doujin.cover.height === 'number');
+    });
+
+    test('has valid width', () => {
+        assert(typeof doujin.cover.width === 'number');
     });
 });

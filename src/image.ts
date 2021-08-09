@@ -39,22 +39,15 @@ export class Image {
         this.extension = Image.extensionConvert(raw.t);
         this.height = raw.h;
         this.width = raw.w;
-        const parsedName = Number(name);
-        this.url = `${isNaN(parsedName) ? THUMBS_URL : IMAGE_URL}/galleries/${doujin.mediaId}/${name}.${
-            this.extension
-        }`;
+        const baseURL = isNaN(Number(name)) ? THUMBS_URL : IMAGE_URL;
+        this.url = `${baseURL}/galleries/${doujin.mediaId}/${name}.${this.extension}`;
     }
 
     /**
      * Fetches the image
      */
-    fetch(): Promise<Buffer> {
-        return new Promise((resolve, reject) => {
-            fetch(this.url)
-                .then(data => data.buffer())
-                .then(data => resolve(data))
-                .catch(error => reject(error));
-        });
+    async fetch(): Promise<Buffer> {
+        return fetch(this.url).then(data => data.buffer());
     }
 
     /**

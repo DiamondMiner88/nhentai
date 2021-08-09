@@ -77,7 +77,7 @@ export class Doujin {
     constructor(raw: APIDoujin) {
         this.raw = raw;
         this.id = raw.id;
-        this.mediaId = +raw.media_id;
+        this.mediaId = Number(raw.media_id);
         this.titles = raw.title;
         this.scanlator = raw.scanlator;
         this.uploadDate = new Date(raw.upload_date * 1000);

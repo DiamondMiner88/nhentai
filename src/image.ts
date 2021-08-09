@@ -7,7 +7,7 @@ export class Image {
     /**
      * File extension
      */
-    readonly extension: string;
+    readonly extension: 'png' | 'gif' | 'jpg';
 
     /**
      * Height in pixels

@@ -41,9 +41,9 @@ export class Doujin {
     readonly url: string;
 
     /**
-     * Scanlator if exists, otherwise a blank string
+     * Scanlator if exists
      */
-    readonly scanlator: string;
+    readonly scanlator: string | null;
 
     /**
      * The time it was published to the site
@@ -78,7 +78,7 @@ export class Doujin {
         this.id = raw.id;
         this.mediaId = Number(raw.media_id);
         this.titles = raw.title;
-        this.scanlator = raw.scanlator;
+        this.scanlator = raw.scanlator.length > 0 ? raw.scanlator : null;
         this.uploadDate = new Date(raw.upload_date * 1000);
         this.uploadTimestamp = raw.upload_date;
         this.length = raw.num_pages;

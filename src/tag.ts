@@ -1,4 +1,4 @@
-import { HOST_URL } from './api';
+import { HOST_URL } from "./constants";
 import { APITag, APITagType } from './apitypes';
 
 export class Tag {

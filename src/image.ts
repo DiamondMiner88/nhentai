@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { Doujin } from './doujin';
-import { THUMBS_URL, IMAGE_URL } from './api';
+import { THUMBS_URL, IMAGE_URL } from "./constants";
 import { APIImage } from './apitypes';
 
 export class Image {

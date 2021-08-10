@@ -116,15 +116,15 @@ suite('Doujin', () => {
         assert(imgRegex.test(doujin.pages[0].url));
     });
 
-    test('cover page_number should be null', () => {
+    test('cover pageNumber should be null', () => {
         assert(doujin.cover.pageNumber === null);
     });
 
-    test('thumbnail page_number should be null', () => {
+    test('thumbnail pageNumber should be null', () => {
         assert(doujin.thumbnail.pageNumber === null);
     });
 
-    test("1st page's page_number should be null", () => {
+    test("1st page's pageNumber should be a number", () => {
         assert(typeof doujin.pages[0].pageNumber === 'number');
     });
 

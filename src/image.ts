@@ -27,7 +27,7 @@ export class Image {
     /**
      * Page number or null when this is a thumbnail/cover.
      */
-    readonly page_number: number | null = null;
+    readonly pageNumber: number | null = null;
 
     /**
      * @hidden
@@ -39,7 +39,7 @@ export class Image {
         this.extension = Image.extensionConvert(raw.t);
         this.height = raw.h;
         this.width = raw.w;
-        this.page_number = isNaN(name as number) ? null : Number(name);
+        this.pageNumber = isNaN(name as number) ? null : Number(name);
         const baseURL = isNaN(name as number) ? THUMBS_URL : IMAGE_URL;
         this.url = `${baseURL}/galleries/${doujin.mediaId}/${name}.${this.extension}`;
     }

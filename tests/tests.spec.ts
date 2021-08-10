@@ -117,15 +117,15 @@ suite('Doujin', () => {
     });
 
     test('cover page_number should be null', () => {
-        assert(doujin.cover.page_number === null);
+        assert(doujin.cover.pageNumber === null);
     });
 
     test('thumbnail page_number should be null', () => {
-        assert(doujin.thumbnail.page_number === null);
+        assert(doujin.thumbnail.pageNumber === null);
     });
 
     test("1st page's page_number should be null", () => {
-        assert(typeof doujin.pages[0].page_number === 'number');
+        assert(typeof doujin.pages[0].pageNumber === 'number');
     });
 
     test('Doujin#raw', () => {

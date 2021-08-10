@@ -2,23 +2,24 @@ import { Doujin } from './doujin';
 import { APISearchResult } from './apitypes';
 
 export class SearchResult {
+    /**
+     * Search results
+     */
     readonly doujins: Doujin[];
 
     /**
-     * Number of pages that the api searched\
-     * How to change it is unknown
+     * Number of combined pages returned
      */
     readonly numPages: number;
 
     /**
-     * Number of doujins per page the api used\
-     * How to change it is unknown
+     * Number of doujins per page
      */
     readonly doujinsPerPage: number;
 
     /**
-     * Internal constructor. Use only if you know what you are doing.
-     * @param raw Raw data
+     * @hidden
+     * @param raw API data
      */
     constructor(raw: APISearchResult) {
         this.doujins = raw.result.map(doujin => new Doujin(doujin));

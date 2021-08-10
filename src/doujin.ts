@@ -4,13 +4,10 @@ import { HOST_URL } from './api';
 import { APIDoujin } from './apitypes';
 
 export class Doujin {
-    /**
-     * ID of the doujin. Commonly known as as a '6 digit number'
-     */
     readonly id: number;
 
     /**
-     * Media ID, this is ***not*** the same as the doujin id
+     * Media ID, this is **NOT** the same as the doujin id
      */
     readonly mediaId: number;
 
@@ -34,7 +31,7 @@ export class Doujin {
     readonly cover: Image;
 
     /**
-     * The cover but low resolution shown when browsing results.
+     * Low resolution cover
      */
     readonly thumbnail: Image;
 
@@ -58,6 +55,9 @@ export class Doujin {
      */
     readonly uploadTimestamp: number;
 
+    /**
+     * Page count
+     */
     readonly length: number;
 
     readonly favorites: number;
@@ -70,9 +70,8 @@ export class Doujin {
     readonly raw: APIDoujin;
 
     /**
-     * Internal constructor. Use only if you know what you are doing.
-     * @param raw Raw data
-     * @param api Instance of the api
+     * @hidden
+     * @param raw API data
      */
     constructor(raw: APIDoujin) {
         this.raw = raw;

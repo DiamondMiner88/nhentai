@@ -1,14 +1,25 @@
 import { HOST_URL } from './api';
 import { APITag, APITagType } from './apitypes';
 
-
 export class Tag {
     readonly id: number;
     readonly type: APITagType;
     readonly name: string;
+
+    /**
+     * URL to main site with doujins that have this tag
+     */
     readonly url: string;
+
+    /**
+     * Times this tag was used on doujins
+     */
     readonly count: number;
 
+    /**
+     * @hidden
+     * @param raw API data
+     */
     constructor(raw: APITag) {
         this.id = raw.id;
         this.type = raw.type;
@@ -33,7 +44,7 @@ export class TagManager {
     readonly all: Tag[];
 
     /**
-     *Internal constructor. Use only if you know what you are doing.
+     * @hidden
      * @param raw Raw data
      */
     constructor(raw: APITag[]) {
@@ -41,7 +52,7 @@ export class TagManager {
     }
 
     /**
-     * Find a tag with a certain id.
+     * Find a tag with a certain id
      * @param id Id of the tag
      */
     getById = (id: number): Tag | undefined => this.all.find(tag => tag.id === id);
@@ -53,8 +64,8 @@ export class TagManager {
     getByType = (type: APITagType): Tag[] => this.all.filter(tag => tag.type === type);
 
     /**
-     * All tags with their type being `tag`. Confusing, I know.\
-     * If you want all the properties of a doujin such as the languages use the `all` property.
+     * All tags with their type being `tag`\
+     * If you want all the properties of a doujin such as the languages use the `all` property
      */
     get tags(): Tag[] {
         return this.getByType('tag');

@@ -3,7 +3,6 @@ import { APIDoujin, APISearchResult } from './apitypes';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
 
-// TODO: confirm that popular actually sorts by favorites
 export enum SortMethods {
     /**
      * Sort by most recently published
@@ -23,11 +22,27 @@ export enum SortMethods {
     POPULAR_TODAY = 'popular-today'
 }
 
+// Cached values for argument checking
 const SortValues = Object.values(SortMethods);
 
+/**
+ * Main website
+ */
 export const HOST_URL = 'https://nhentai.net';
+
+/**
+ * Main image server
+ */
 export const IMAGE_URL = 'https://i.nhentai.net';
+
+/**
+ * Thumbnail server
+ */
 export const THUMBS_URL = 'https://t.nhentai.net';
+
+/**
+ * Base API Url
+ */
 export const API_URL = HOST_URL + '/api';
 
 export class API {
@@ -37,7 +52,7 @@ export class API {
     constructor(public options = {}) {}
 
     /**
-     * Wrapper over node-fetch that checks for api errors
+     * Node-fetch wrapper that handles api errors
      * @param path API path
      * @returns parsed JSON
      */
@@ -91,14 +106,14 @@ export class API {
     }
 
     /**
-     * Get doujins shown on the homepage. Alias for `search('*', [...])`
+     * Fetch homepage doujins
      */
     fetchHomepage(page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
         return this.search('*', page, sort);
     }
 
     /**
-     * Search nhentai for any doujin that matches the query in any titles
+     * Search by string query
      */
     async search(query: string, page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
         page = Number(page);
@@ -111,8 +126,7 @@ export class API {
     }
 
     /**
-     * Searches nhentai for doujins that have this tag
-     * @param tagID ID of the tag
+     * Search doujins with this tag
      */
     async searchByTagID(
         tagID: number | string,
@@ -126,6 +140,7 @@ export class API {
         if (isNaN(page)) throw new TypeError('page is not a number');
         if (!SortValues.includes(sort)) throw new TypeError('sort method is not valid');
 
+        // An empty &sort query param causes an error
         const res = await this.fetch(`/galleries/tagged?tag_id=${tagID}&page=${page}${sort ? `&sort=${sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
     }
@@ -146,7 +161,7 @@ export class API {
     }
 
     /**
-     * Get a random doujin by using nhentai's `/random` endpoint which redirects to a doujin and the url is captured.
+     * Fetch a random doujin ID
      */
     async randomDoujinID(): Promise<number> {
         return fetch(`${HOST_URL}/random`, { method: 'HEAD' }).then(data => {
@@ -157,7 +172,7 @@ export class API {
     }
 
     /**
-     * Gets a random doujin using `randomDoujinID()` and `fetchDoujin()`
+     * Fetch a random doujin
      */
     async randomDoujin(): Promise<Doujin> {
         const id = await this.randomDoujinID();
@@ -167,6 +182,9 @@ export class API {
     }
 }
 
+/**
+ * Represents errors returned by the api (not network)
+ */
 export class nhentaiAPIError extends Error {
     response: Record<string, unknown>;
     url: string;

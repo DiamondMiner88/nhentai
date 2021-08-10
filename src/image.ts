@@ -39,7 +39,8 @@ export class Image {
         this.extension = Image.extensionConvert(raw.t);
         this.height = raw.h;
         this.width = raw.w;
-        const baseURL = isNaN(Number(name)) ? THUMBS_URL : IMAGE_URL;
+        this.page_number = isNaN(name as number) ? null : Number(name);
+        const baseURL = isNaN(name as number) ? THUMBS_URL : IMAGE_URL;
         this.url = `${baseURL}/galleries/${doujin.mediaId}/${name}.${this.extension}`;
     }
 

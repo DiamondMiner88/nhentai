@@ -67,15 +67,15 @@ export class API {
 
     /**
      * Check if a doujin exists
-     * @param doujinID ID of the doujin
+     * @param id ID of the doujin
      */
-    doujinExists(doujinID: number | string): Promise<boolean> {
-        doujinID = Number(doujinID);
+    doujinExists(id: number | string): Promise<boolean> {
+        id = Number(id);
 
-        if (isNaN(doujinID)) throw new TypeError('id is not a number');
-        if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
+        if (isNaN(id)) throw new TypeError('id is not a number');
+        if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
-        return fetch(`${API_URL}/gallery/${doujinID}`, { method: 'HEAD' }).then(res => {
+        return fetch(`${API_URL}/gallery/${id}`, { method: 'HEAD' }).then(res => {
             switch (res.status) {
                 case 200:
                     return true;
@@ -89,15 +89,15 @@ export class API {
 
     /**
      * Fetch a doujin
-     * @param doujinID ID of the doujin.
+     * @param id ID of the doujin.
      */
-    async fetchDoujin(doujinID: number | string): Promise<Doujin | null> {
-        doujinID = Number(doujinID);
+    async fetchDoujin(id: number | string): Promise<Doujin | null> {
+        id = Number(id);
 
-        if (isNaN(doujinID)) throw new TypeError('id is not a number');
-        if (doujinID <= 0) throw new RangeError('id cannot be lower than 1');
+        if (isNaN(id)) throw new TypeError('id is not a number');
+        if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
-        return this.fetch(`/gallery/${doujinID}`)
+        return this.fetch(`/gallery/${id}`)
             .then(data => new Doujin(data as APIDoujin))
             .catch(err => {
                 if (err.response?.error === 'does not exist') return null;
@@ -127,36 +127,40 @@ export class API {
 
     /**
      * Search doujins with this tag
+     * @param id Tag ID
+     * @param page Page number
+     * @param sort API sort method
      */
     async searchByTagID(
-        tagID: number | string,
+        id: number | string,
         page: string | number = 1,
         sort = SortMethods.RECENT
     ): Promise<SearchResult> {
-        tagID = Number(tagID);
+        id = Number(id);
         page = Number(page);
 
-        if (isNaN(tagID)) throw new TypeError('tagId is not a number');
+        if (isNaN(id)) throw new TypeError('tagId is not a number');
         if (isNaN(page)) throw new TypeError('page is not a number');
         if (!SortValues.includes(sort)) throw new TypeError('sort method is not valid');
 
         // An empty &sort query param causes an error
-        const res = await this.fetch(`/galleries/tagged?tag_id=${tagID}&page=${page}${sort ? `&sort=${sort}` : ''}`);
+        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${page}${sort ? `&sort=${sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
     }
 
     /**
      * Find similar doujins
-     * @param doujinID ID of the doujin
+     * @param id Doujin ID
+     * @param page Page number
      */
-    async searchRelated(doujinID: number | string, page: string | number = 1): Promise<SearchResult> {
-        doujinID = Number(doujinID);
+    async searchRelated(id: number | string, page: string | number = 1): Promise<SearchResult> {
+        id = Number(id);
         page = Number(page);
 
-        if (isNaN(doujinID)) throw new TypeError('doujinID is not a number');
+        if (isNaN(id)) throw new TypeError('doujinID is not a number');
         if (isNaN(page)) throw new TypeError('page is not a number');
 
-        const res = await this.fetch(`/gallery/${doujinID}/related`);
+        const res = await this.fetch(`/gallery/${id}/related`);
         return new SearchResult(res as APISearchResult);
     }
 

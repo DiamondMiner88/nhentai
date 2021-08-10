@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SearchResult | nhentai</title>
+	<title>APISearchResult | nhentai</title>
 	<meta name="description" content="Documentation for nhentai">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">nhentai</a>
 				</li>
 				<li>
-					<a href="../modules/search.html">search</a>
+					<a href="../modules/apitypes.html">apitypes</a>
 				</li>
 				<li>
-					<a href="search.SearchResult.html">SearchResult</a>
+					<a href="apitypes.APISearchResult.html">APISearchResult</a>
 				</li>
 			</ul>
-			<h1>Class SearchResult</h1>
+			<h1>Interface APISearchResult</h1>
 		</div>
 	</div>
 </header>
@@ -72,7 +72,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SearchResult</span>
+						<span class="target">APISearchResult</span>
 					</li>
 				</ul>
 			</section>
@@ -83,9 +83,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="search.SearchResult.html#doujins" class="tsd-kind-icon">doujins</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="search.SearchResult.html#doujinsPerPage" class="tsd-kind-icon">doujins<wbr>Per<wbr>Page</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="search.SearchResult.html#numPages" class="tsd-kind-icon">num<wbr>Pages</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="apitypes.APISearchResult.html#num_pages" class="tsd-kind-icon">num_<wbr>pages</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="apitypes.APISearchResult.html#per_page" class="tsd-kind-icon">per_<wbr>page</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="apitypes.APISearchResult.html#result" class="tsd-kind-icon">result</a></li>
 							</ul>
 						</section>
 					</div>
@@ -93,50 +93,35 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="doujins" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> doujins</h3>
-					<div class="tsd-signature tsd-kind-icon">doujins<span class="tsd-signature-symbol">:</span> <a href="doujin.Doujin.html" class="tsd-signature-type" data-tsd-kind="Class">Doujin</a><span class="tsd-signature-symbol">[]</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="num_pages" class="tsd-anchor"></a>
+					<h3>num_<wbr>pages</h3>
+					<div class="tsd-signature tsd-kind-icon">num_<wbr>pages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/cbc0f06/src/search.ts#L8">src/search.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/cbc0f06/src/apitypes.ts#L39">src/apitypes.ts:39</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Search results</p>
-						</div>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="doujinsPerPage" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> doujins<wbr>Per<wbr>Page</h3>
-					<div class="tsd-signature tsd-kind-icon">doujins<wbr>Per<wbr>Page<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="per_page" class="tsd-anchor"></a>
+					<h3>per_<wbr>page</h3>
+					<div class="tsd-signature tsd-kind-icon">per_<wbr>page<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/cbc0f06/src/search.ts#L18">src/search.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/cbc0f06/src/apitypes.ts#L40">src/apitypes.ts:40</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Number of doujins per page</p>
-						</div>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="numPages" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> num<wbr>Pages</h3>
-					<div class="tsd-signature tsd-kind-icon">num<wbr>Pages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="result" class="tsd-anchor"></a>
+					<h3>result</h3>
+					<div class="tsd-signature tsd-kind-icon">result<span class="tsd-signature-symbol">:</span> <a href="apitypes.APIDoujin.html" class="tsd-signature-type" data-tsd-kind="Interface">APIDoujin</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/cbc0f06/src/search.ts#L13">src/search.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/DiamondMiner88/nhentai/blob/cbc0f06/src/apitypes.ts#L38">src/apitypes.ts:38</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Number of combined pages returned</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -149,7 +134,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/api.html">api</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/apitypes.html">apitypes</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -161,7 +146,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/image.html">image</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/search.html">search</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -171,24 +156,36 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="apitypes.APIDoujin.html" class="tsd-kind-icon">APIDoujin</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="apitypes.APIImage.html" class="tsd-kind-icon">APIImage</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="search.SearchResult.html" class="tsd-kind-icon">Search<wbr>Result</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="apitypes.APISearchResult.html" class="tsd-kind-icon">APISearch<wbr>Result</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="search.SearchResult.html#doujins" class="tsd-kind-icon">doujins</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="apitypes.APISearchResult.html#num_pages" class="tsd-kind-icon">num_<wbr>pages</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="search.SearchResult.html#doujinsPerPage" class="tsd-kind-icon">doujins<wbr>Per<wbr>Page</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="apitypes.APISearchResult.html#per_page" class="tsd-kind-icon">per_<wbr>page</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="search.SearchResult.html#numPages" class="tsd-kind-icon">num<wbr>Pages</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="apitypes.APISearchResult.html#result" class="tsd-kind-icon">result</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="apitypes.APITag.html" class="tsd-kind-icon">APITag</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/apitypes.html#APITagType" class="tsd-kind-icon">APITag<wbr>Type</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -203,14 +200,14 @@
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 			</ul>
 		</div>
 	</div>

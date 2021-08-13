@@ -26,6 +26,7 @@ suite('API', () => {
             assert(result instanceof Doujin);
         });
         test('rejects when page is not number', () => {
+            // @ts-expect-error tests
             return expect(lib.fetchDoujin('NaN')).to.be.rejected;
         });
         test('invalid doujin returns null', async () => {

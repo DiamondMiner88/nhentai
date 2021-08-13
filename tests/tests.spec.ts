@@ -49,12 +49,12 @@ suite('API', () => {
         });
 
         test('different pages', async () => {
-            const result = await lib.search('hololive', 2);
+            const result = await lib.search('hololive', { page: 2 });
             assert(result.doujins[0].pages[0] instanceof Image);
         });
 
         test('different sort method', async () => {
-            const result = await lib.search('hololive', 1, SortMethods.POPULAR_ALL_TIME);
+            const result = await lib.search('hololive', { page: 1, sort: SortMethods.POPULAR_ALL_TIME });
             assert(result.doujins[0].pages[0] instanceof Image);
         });
     });
@@ -66,7 +66,7 @@ suite('API', () => {
         });
         test('reject when sort method is invalid', () => {
             // @ts-expect-error tests
-            return expect(lib.searchByTagID(1, 1, 'a')).to.eventually.be.rejected;
+            return expect(lib.searchByTagID(1, { sort: 'a' })).to.eventually.be.rejected;
         });
     });
 

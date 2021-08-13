@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import { APIDoujin, APISearchResult } from './apitypes';
+import { APIDoujin, APISearchResult, APISearchOptions } from './apitypes';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
-import { API_URL, HOST_URL, SortMethods, SortValues } from './constants';
+import { API_URL, HOST_URL, SortMethods } from './constants';
 
 export class API {
     /**
@@ -67,20 +67,16 @@ export class API {
     /**
      * Fetch homepage doujins
      */
-    fetchHomepage(page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
-        return this.search('*', page, sort);
+    fetchHomepage(options: APISearchOptions = {}): Promise<SearchResult> {
+        return this.search('*', options);
     }
 
     /**
      * Search by string query
      */
-    async search(query: string, page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
-        page = Number(page);
-
-        if (isNaN(page)) throw new TypeError('page is not a number');
-        if (!SortValues.includes(sort)) throw new TypeError('sort method is not valid');
-
-        const res = await this.fetch(`/galleries/search?query=${query}&page=${page}&sort=${sort}`);
+    // async search(query: string, page: string | number = 1, sort = SortMethods.RECENT): Promise<SearchResult> {
+    async search(query: string, options: APISearchOptions = {}): Promise<SearchResult> {
+        const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page ? `${options.page}` : 1}&sort=${options.sort ? `${options.sort}` : SortMethods.RECENT}`);
         return new SearchResult(res as APISearchResult);
     }
 
@@ -92,18 +88,13 @@ export class API {
      */
     async searchByTagID(
         id: number | string,
-        page: string | number = 1,
-        sort = SortMethods.RECENT
+        options: APISearchOptions = {}
     ): Promise<SearchResult> {
         id = Number(id);
-        page = Number(page);
 
         if (isNaN(id)) throw new TypeError('tagId is not a number');
-        if (isNaN(page)) throw new TypeError('page is not a number');
-        if (!SortValues.includes(sort)) throw new TypeError('sort method is not valid');
-
         // An empty &sort query param causes an error
-        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${page}${sort ? `&sort=${sort}` : ''}`);
+        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page ? `${options.page}` : 1}${options.sort ? `&sort=${options.sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
     }
 
@@ -112,12 +103,10 @@ export class API {
      * @param id Doujin ID
      * @param page Page number
      */
-    async searchRelated(id: number | string, page: string | number = 1): Promise<SearchResult> {
+    async searchRelated(id: number | string): Promise<SearchResult> {
         id = Number(id);
-        page = Number(page);
 
         if (isNaN(id)) throw new TypeError('doujinID is not a number');
-        if (isNaN(page)) throw new TypeError('page is not a number');
 
         const res = await this.fetch(`/gallery/${id}/related`);
         return new SearchResult(res as APISearchResult);

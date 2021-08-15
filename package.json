@@ -9,7 +9,9 @@
         "lint": "eslint -c .eslintrc --ext .ts --fix src",
         "build": "rm -rf lib/** && tsc",
         "docs": "typedoc --out docs --exclude src/index.ts src",
-        "changelog": "npx conventional-changelog -p angular"
+        "changelog": "npx conventional-changelog -p angular",
+        "prepare": "husky install",
+        "prettier": "prettier --write \"{src,tests}/*.ts\" \"package.json\""
     },
     "keywords": [
         "nhentai",
@@ -38,7 +40,9 @@
         "conventional-changelog-cli": "^2.1.1",
         "eledoc": "^0.2.1",
         "eslint": "^7.32.0",
+        "husky": "^7.0.1",
         "mocha": "^9.0.3",
+        "prettier": "^2.3.2",
         "ts-node": "^10.2.0",
         "typedoc": "^0.21.5",
         "typescript": "^4.3.5"

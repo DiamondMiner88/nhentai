@@ -82,7 +82,7 @@ export class API {
      */
     async searchByTagID(id: number, options: APISearchOptions = {}): Promise<SearchResult> {
         // An empty &sort query param causes an error
-        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page ? `${options.page}` : 1}${options.sort ? `&sort=${options.sort}` : ''}`);
+        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
     }
 

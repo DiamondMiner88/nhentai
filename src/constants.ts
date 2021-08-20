@@ -17,6 +17,9 @@ export enum SortMethods {
     POPULAR_TODAY = 'popular-today'
 }
 
+// Cached values for argument checking
+export const SortValues = Object.values(SortMethods);
+
 /**
  * Main website
  */

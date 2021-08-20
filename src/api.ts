@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { APIDoujin, APISearchResult } from './apitypes';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
-import { API_URL, HOST_URL, SortMethods } from './constants';
+import { API_URL, HOST_URL, SortMethods, SortValues } from './constants';
 
 export interface APISearchOptions {
     page?: number;
@@ -34,7 +34,10 @@ export class API {
      * Check if a doujin exists
      * @param id ID of the doujin
      */
-    doujinExists(id: number): Promise<boolean> {
+    doujinExists(id: number | string): Promise<boolean> {
+        id = Number(id);
+
+        if (isNaN(id)) throw new TypeError('id is not a number');
         if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
         return fetch(`${API_URL}/gallery/${id}`, { method: 'HEAD' }).then(res => {
@@ -53,7 +56,10 @@ export class API {
      * Fetch a doujin
      * @param id ID of the doujin.
      */
-    async fetchDoujin(id: number): Promise<Doujin | null> {
+    async fetchDoujin(id: number | string): Promise<Doujin | null> {
+        id = Number(id);
+
+        if (isNaN(id)) throw new TypeError('id is not a number');
         if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
         return this.fetch(`/gallery/${id}`)
@@ -77,6 +83,11 @@ export class API {
      * @param options Search Options
      */
     async search(query: string, options: APISearchOptions = {}): Promise<SearchResult> {
+        options.page = Number(options.page);
+
+        if (options.page && isNaN(options.page)) throw new TypeError('page is not a number');
+        if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
+
         const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
         return new SearchResult(res as APISearchResult);
     }
@@ -87,6 +98,10 @@ export class API {
      * @param options Search Options
      */
     async searchByTagID(id: number, options: APISearchOptions = {}): Promise<SearchResult> {
+        if (isNaN(id)) throw new TypeError('tagId is not a number');
+        if (options.page && isNaN(options.page)) throw new TypeError('page is not a number');
+        if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
+
         // An empty &sort query param causes an error
         const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
@@ -96,7 +111,10 @@ export class API {
      * Find similar doujins
      * @param id Doujin ID
      */
-    async searchRelated(id: number): Promise<SearchResult> {
+    async searchRelated(id: number | string): Promise<SearchResult> {
+        id = Number(id);
+        if (isNaN(id)) throw new TypeError('doujinID is not a number');
+
         const res = await this.fetch(`/gallery/${id}/related`);
         return new SearchResult(res as APISearchResult);
     }

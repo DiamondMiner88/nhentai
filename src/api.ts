@@ -77,7 +77,7 @@ export class API {
      * @param options Search Options
      */
     async search(query: string, options: APISearchOptions = {}): Promise<SearchResult> {
-        const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page ? `${options.page}` : 1}&sort=${options.sort ? `${options.sort}` : SortMethods.RECENT}`);
+        const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
         return new SearchResult(res as APISearchResult);
     }
 
@@ -88,7 +88,7 @@ export class API {
      */
     async searchByTagID(id: number, options: APISearchOptions = {}): Promise<SearchResult> {
         // An empty &sort query param causes an error
-        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page ? `${options.page}` : 1}${options.sort ? `&sort=${options.sort}` : ''}`);
+        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
     }
 

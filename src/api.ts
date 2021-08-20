@@ -1,8 +1,14 @@
 import fetch from 'node-fetch';
-import { APIDoujin, APISearchResult, APISearchOptions } from './apitypes';
+import { APIDoujin, APISearchResult } from './apitypes';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
 import { API_URL, HOST_URL, SortMethods } from './constants';
+
+export interface APISearchOptions {
+    page?: number;
+    sort?: SortMethods;
+    language?: 'english' | 'japanese' | 'chinese'
+}
 
 export class API {
     /**

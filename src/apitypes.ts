@@ -1,5 +1,3 @@
-import { SortMethods } from './constants';
-
 export interface APIDoujin {
     id: number;
     media_id: string;
@@ -40,10 +38,4 @@ export interface APISearchResult {
     result: APIDoujin[];
     num_pages: number;
     per_page: number;
-}
-
-export interface APISearchOptions {
-    page?: number;
-    sort?: SortMethods;
-    language?: 'english' | 'japanese' | 'chinese'
 }

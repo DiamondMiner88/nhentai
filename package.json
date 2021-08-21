@@ -29,6 +29,8 @@
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {
+        "@commitlint/cli": "^13.1.0",
+        "@commitlint/config-angular": "^13.1.0",
         "@types/chai": "^4.2.21",
         "@types/chai-as-promised": "^7.1.4",
         "@types/mocha": "^9.0.0",

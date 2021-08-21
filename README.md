@@ -22,6 +22,7 @@ npm install nhentai
 ```
 
 ### Usage
+## Javascript
 ```js
 const nhentai = require('nhentai');
 const api = new nhentai.API();
@@ -29,6 +30,29 @@ const api = new nhentai.API();
 api.fetchDoujin(334430).then(doujin => {
     // Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First
     doujin.titles.pretty;
+
+    // https://i.nhentai.net/galleries/1767063/1.jpg
+    doujin.pages[0].url;
+
+    // https://t.nhentai.net/galleries/1767063/cover.jpg
+    doujin.cover.url;
+
+    // english, translated, kantai collection, teitoku, yahagi, rosapersica, [etc...]
+    doujin.tags.all.map(tag => tag.name).join(', ');
+});
+
+```
+## Typescript
+```ts
+import * as nhentai from "nhentai";
+const api = new nhentai.API();
+
+api.fetchDoujin(334430).then(doujin => {
+    // Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First
+    doujin.titles.pretty;
+    
+    // Get Information about each page [page number, height-width, url and file extension]
+    doujin.pages;
 
     // https://i.nhentai.net/galleries/1767063/1.jpg
     doujin.pages[0].url;

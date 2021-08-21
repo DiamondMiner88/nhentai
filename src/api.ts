@@ -7,7 +7,7 @@ import { API_URL, HOST_URL, SortMethods, SortValues } from './constants';
 export interface APISearchOptions {
     page?: number;
     sort?: SortMethods;
-    language?: 'english' | 'japanese' | 'chinese'
+    language?: 'english' | 'japanese' | 'chinese';
 }
 
 export class API {
@@ -88,6 +88,7 @@ export class API {
         if (options.page && isNaN(options.page)) throw new TypeError('page is not a number');
         if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
 
+        // prettier-ignore
         const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
         return new SearchResult(res as APISearchResult);
     }
@@ -103,6 +104,7 @@ export class API {
         if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
 
         // An empty &sort query param causes an error
+        // prettier-ignore
         const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
         return new SearchResult(res as APISearchResult);
     }

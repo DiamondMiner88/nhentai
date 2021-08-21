@@ -23,7 +23,11 @@ npm install nhentai
 
 ### Usage
 ```js
+// CommonJS
 const nhentai = require('nhentai');
+// ES6/Typescript
+import * as nhentai from "nhentai";
+
 const api = new nhentai.API();
 
 api.fetchDoujin(334430).then(doujin => {

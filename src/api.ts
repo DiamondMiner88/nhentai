@@ -12,7 +12,7 @@ export interface APISearchOptions {
 
 export class API {
     /**
-     * Constuct a new API wrapper
+     * Construct a new API wrapper
      */
     constructor(public options = {}) {}
 
@@ -34,7 +34,7 @@ export class API {
      * Check if a doujin exists
      * @param id ID of the doujin
      */
-    doujinExists(id: number | string): Promise<boolean> {
+    async doujinExists(id: number | string): Promise<boolean> {
         id = Number(id);
 
         if (isNaN(id)) throw new TypeError('id is not a number');
@@ -74,7 +74,7 @@ export class API {
      * Fetch homepage doujins
      * @param options Search Options
      */
-    fetchHomepage(options: APISearchOptions = {}): Promise<SearchResult> {
+    async fetchHomepage(options: APISearchOptions = {}): Promise<SearchResult> {
         return this.search('*', options);
     }
 
@@ -83,8 +83,6 @@ export class API {
      * @param options Search Options
      */
     async search(query: string, options: APISearchOptions = {}): Promise<SearchResult> {
-        options.page = Number(options.page);
-
         if (options.page && isNaN(options.page)) throw new TypeError('page is not a number');
         if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
 

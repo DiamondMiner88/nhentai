@@ -49,7 +49,7 @@ suite('API', () => {
         });
 
         test('different pages', async () => {
-            const result = await lib.search('hololive', { page: 2 });
+            const result = await lib.search('azur lane', { page: 2 });
             assert(result.doujins[0].pages[0] instanceof Image);
         });
 

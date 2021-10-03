@@ -11,7 +11,8 @@
         "docs": "typedoc --out docs --exclude src/index.ts src",
         "changelog": "npx conventional-changelog -p angular",
         "prepare": "husky install",
-        "prettier": "prettier --write \"{src,tests}/*.ts\" \"package.json\""
+        "prettier": "prettier --write \"{src,tests}/*.ts\" \"package.json\"",
+        "coverage": "npx nyc npm run test"
     },
     "keywords": [
         "nhentai",
@@ -44,6 +45,7 @@
         "eslint": "^7.32.0",
         "husky": "^7.0.1",
         "mocha": "^9.0.3",
+        "nyc": "^15.1.0",
         "prettier": "^2.3.2",
         "ts-node": "^10.2.0",
         "typedoc": "^0.21.5",

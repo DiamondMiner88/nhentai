@@ -1,3 +1,5 @@
 /node_modules/
 /lib/
 /.vscode/
+/.nyc_output/
+/coverage/

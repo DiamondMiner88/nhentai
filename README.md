@@ -1,7 +1,7 @@
 <div align="center">
   <br/>
   <p>
-    <img width="450" src="https://gist.githubusercontent.com/DiamondMiner88/50ce07d1f0c354c10e624f495765001a/raw/7c9d51400a9d368d43160a02dd4cbc2538a38c59/logo.svg">
+    <img width="700" src="https://raw.githubusercontent.com/DiamondMiner88/nhentai/main/.github/logo.svg">
   </p>
   <br />
   <p>
@@ -15,6 +15,8 @@
 #  A library for interacting with the [nhentai](https://nhentai.net) API
 
 - [Documentation](https://diamondminer88.github.io/nhentai/index.html)
+- 100% coverage of known API
+- NOT ABANDONED, JUST FEATURE COMPLETE
 
 ### Installing
 ```
@@ -43,5 +45,4 @@ api.fetchDoujin(334430).then(doujin => {
     // english, translated, kantai collection, teitoku, yahagi, rosapersica, [etc...]
     doujin.tags.all.map(tag => tag.name).join(', ');
 });
-
 ```

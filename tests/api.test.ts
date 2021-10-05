@@ -3,7 +3,7 @@ import { use, expect } from 'chai';
 import * as chai_as_promised from 'chai-as-promised';
 use(chai_as_promised);
 
-import { API, SortMethods, Doujin, SearchResult } from '../src/index';
+import { API, Comment, Doujin, SearchResult, SortMethods } from '../src/index';
 
 suite('API.ts', () => {
     const lib = new API();
@@ -35,12 +35,33 @@ suite('API.ts', () => {
             return expect(lib.fetchDoujin(999999)).to.eventually.be.null;
         });
 
-        test('reject page != number', () => {
+        test('reject id != number', () => {
             return expect(lib.fetchDoujin('abc')).to.eventually.be.rejected;
         });
 
-        test('reject page <= 1', () => {
+        test('reject id <= 1', () => {
             return expect(lib.fetchDoujin(-1)).to.eventually.be.rejected;
+        });
+    });
+
+    suite('API#fetchComments', () => {
+        test('control -> Comment[]', async () => {
+            const result = await lib.fetchComments(334430);
+            // Until I figure out a proper way to test arrays, this will do
+            // eslint-disable-next-line
+            return expect(result![0]).to.be.instanceOf(Comment);
+        });
+
+        test('invalid id -> null', () => {
+            return expect(lib.fetchComments(999999)).to.eventually.be.null;
+        });
+
+        test('reject id != number', () => {
+            return expect(lib.fetchComments('abc')).to.eventually.be.rejected;
+        });
+
+        test('reject id <= 1', () => {
+            return expect(lib.fetchComments(-1)).to.eventually.be.rejected;
         });
     });
 

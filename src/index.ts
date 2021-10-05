@@ -1,5 +1,7 @@
 export * from './api';
 export * from './apitypes';
+export * from './comment';
+export * from './commentAuthor';
 export * from './doujin';
 export * from './image';
 export * from './search';

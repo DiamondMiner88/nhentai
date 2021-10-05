@@ -39,3 +39,20 @@ export interface APISearchResult {
     num_pages: number;
     per_page: number;
 }
+
+export interface APIComment {
+    id: number;
+    gallery_id: number;
+    poster: APICommentAuthor;
+    post_date: number;
+    body: string;
+}
+
+export interface APICommentAuthor {
+    id: number;
+    username: string;
+    slug: string;
+    avatar_url: string;
+    is_superuser: boolean;
+    is_staff: boolean;
+}

@@ -1,8 +1,9 @@
 import fetch from 'node-fetch';
-import { APIDoujin, APISearchResult } from './apitypes';
+import { API_URL, HOST_URL, SortMethods, SortValues } from './constants';
+import { APIComment, APIDoujin, APISearchResult } from './apitypes';
+import { Comment } from './comment';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
-import { API_URL, HOST_URL, SortMethods, SortValues } from './constants';
 
 export interface APISearchOptions {
     page?: number;
@@ -54,7 +55,7 @@ export class API {
 
     /**
      * Fetch a doujin
-     * @param id ID of the doujin.
+     * @param id ID of the doujin
      */
     async fetchDoujin(id: number | string): Promise<Doujin | null> {
         id = Number(id);
@@ -66,6 +67,24 @@ export class API {
             .then(data => new Doujin(data as APIDoujin))
             .catch(err => {
                 if (err.response?.error === 'does not exist') return null;
+                throw err;
+            });
+    }
+
+    /**
+     * Fetch a doujin's comments
+     * @param id ID of the doujin
+     */
+    async fetchComments(id: number | string): Promise<Comment[] | null> {
+        id = Number(id);
+
+        if (isNaN(id)) throw new TypeError('id is not a number');
+        if (id <= 0) throw new RangeError('id cannot be lower than 1');
+
+        return this.fetch(`/gallery/${id}/comments`)
+            .then(data => (data as APIComment[]).map(comment => new Comment(comment)))
+            .catch(err => {
+                if (err.response?.error === 'Gallery does not exist') return null;
                 throw err;
             });
     }

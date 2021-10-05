@@ -57,6 +57,8 @@ suite('Doujin', () => {
         return expect(doujin.scanlator).to.be.null;
     });
 
+    // TODO: find doujin with a scanlator for test coverage
+
     test('Doujin#uploadDate', () => {
         return expect(doujin.uploadDate.getTime() / 1000).to.equal(doujin.uploadTimestamp);
     });

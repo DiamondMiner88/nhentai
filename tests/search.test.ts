@@ -11,7 +11,7 @@ suite('search.ts', () => {
 
     before(async () => {
         const result = await lib.search('azur lane');
-        if (!result) throw Error('Failed to fetch doujin');
+        if (!result) throw Error('Search query failed');
         search = result;
     });
 

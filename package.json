@@ -2,12 +2,12 @@
     "name": "nhentai",
     "version": "3.0.0",
     "description": "A library for interacting with the nhentai API",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "test": "mocha -t 20000 --retries 1 -r ts-node/register tests/*.test.ts",
         "lint": "eslint -c .eslintrc --ext .ts --fix src",
-        "build": "rm -rf lib/** && tsc",
+        "build": "rm -rf dist/** && tsc",
         "docs": "typedoc --out docs --exclude src/index.ts src",
         "changelog": "npx conventional-changelog -p angular",
         "prepare": "husky install",
@@ -60,6 +60,6 @@
     },
     "homepage": "https://diamondminer88.github.io/nhentai/index.html",
     "files": [
-        "lib/**/*"
+        "dist/**/*"
     ]
 }

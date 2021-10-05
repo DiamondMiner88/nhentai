@@ -1,3 +1,6 @@
+/**
+ * Sorting method for the API used by some fetching/search methods
+ */
 export enum SortMethods {
     /**
      * Sort by most recently published

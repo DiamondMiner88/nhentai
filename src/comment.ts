@@ -1,6 +1,9 @@
 import { APIComment } from './apitypes';
 import { CommentAuthor } from './commentAuthor';
 
+/**
+ * A single comment on a doujin
+ */
 export class Comment {
     /**
      * Comment ID

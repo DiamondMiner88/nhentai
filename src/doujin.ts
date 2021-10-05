@@ -4,6 +4,9 @@ import { HOST_URL } from './constants';
 import { APIDoujin } from './apitypes';
 
 export class Doujin {
+    /**
+     * Doujin id (`/g/:id`)
+     */
     readonly id: number;
 
     /**
@@ -12,10 +15,10 @@ export class Doujin {
     readonly mediaId: number;
 
     /**
-     * All the titles that the doujin has.
-     * @param english Example: (C92) [Rosapersica (Ichinomiya)] Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First (Kantai Collection -KanColle-) [English] [Spicaworks]
-     * @param japanese Example: (C92) [Rosapersica (一ノ宮)] 軽巡矢矧は恋をした。上 (艦隊これくしょん -艦これ-) [英訳]
-     * @param pretty Example: Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First
+     * All the titles that the doujin has. Examples:
+     * @param english (C92) [Rosapersica (Ichinomiya)] Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First (Kantai Collection -KanColle-) [English] [Spicaworks]
+     * @param japanese (C92) [Rosapersica (一ノ宮)] 軽巡矢矧は恋をした。上 (艦隊これくしょん -艦これ-) [英訳]
+     * @param pretty Keijun Yahagi wa Koi o Shita. Jou | Light Cruiser Yahagi Fell In Love - First
      */
     readonly titles: {
         english: string;
@@ -23,6 +26,9 @@ export class Doujin {
         pretty: string;
     };
 
+    /**
+     * Image pages on this doujin
+     */
     readonly pages: Image[];
 
     /**
@@ -51,7 +57,7 @@ export class Doujin {
     readonly uploadDate: Date;
 
     /**
-     * The timestamp of when it was published to the site
+     * UNIX timestamp (seconds) of when it was published to the site
      */
     readonly uploadTimestamp: number;
 
@@ -60,8 +66,14 @@ export class Doujin {
      */
     readonly length: number;
 
+    /**
+     * Amount of favorites on this doujin
+     */
     readonly favorites: number;
 
+    /**
+     * ALL (languages/characters/actual "tags") tags on this doujin
+     */
     readonly tags: TagManager;
 
     /**
@@ -90,10 +102,18 @@ export class Doujin {
         this.tags = new TagManager(raw.tags);
     }
 
+    /**
+     * Checks for presence of a tag on this doujin
+     * @param name Tag name
+     */
     hasTagByName(name: string): boolean {
         return !!this.tags.all.find(tag => tag.name === name);
     }
 
+    /**
+     * Checks for presence of a tag on this doujin
+     * @param name Tag ID
+     */
     hasTagByID(ID: number): boolean {
         return !!this.tags.all.find(tag => tag.id === ID);
     }

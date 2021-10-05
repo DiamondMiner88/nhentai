@@ -2,8 +2,19 @@ import { HOST_URL } from './constants';
 import { APITag, APITagType } from './apitypes';
 
 export class Tag {
+    /**
+     * Internal tag ID
+     */
     readonly id: number;
+
+    /**
+     * Tag type (language/characters/tag/etc...)
+     */
     readonly type: APITagType;
+
+    /**
+     * UI tag name
+     */
     readonly name: string;
 
     /**
@@ -71,26 +82,44 @@ export class TagManager {
         return this.getByType('tag');
     }
 
+    /**
+     * Tags with the `group` tag type
+     */
     get groups(): Tag[] {
         return this.getByType('group');
     }
 
+    /**
+     * Tags with the `language` tag type
+     */
     get languages(): Tag[] {
         return this.getByType('language');
     }
 
+    /**
+     * Tags with the `artist` tag type
+     */
     get artists(): Tag[] {
         return this.getByType('artist');
     }
 
+    /**
+     * Tags with the `character` tag type
+     */
     get characters(): Tag[] {
         return this.getByType('character');
     }
 
+    /**
+     * Tags with the `parody` tag type
+     */
     get parodies(): Tag[] {
         return this.getByType('parody');
     }
 
+    /**
+     * Tags with the `category` tag type
+     */
     get categories(): Tag[] {
         return this.getByType('category');
     }

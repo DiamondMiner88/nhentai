@@ -8,7 +8,7 @@ export class SearchResult {
     readonly doujins: Doujin[];
 
     /**
-     * Number of combined pages returned
+     * Queryable page count in the API
      */
     readonly numPages: number;
 

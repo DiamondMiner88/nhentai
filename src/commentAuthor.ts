@@ -1,5 +1,8 @@
 import { APICommentAuthor, IMAGE_URL } from '.';
 
+/**
+ * An author of a comment on a doujin
+ */
 export class CommentAuthor {
     /**
      * The ID of this user

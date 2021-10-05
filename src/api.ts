@@ -5,12 +5,18 @@ import { Comment } from './comment';
 import { Doujin } from './doujin';
 import { SearchResult } from './search';
 
+/**
+ * Search options for `API#fetchHomepage`/`search`/`searchByTagID`
+ */
 export interface APISearchOptions {
     page?: number;
     sort?: SortMethods;
     language?: 'english' | 'japanese' | 'chinese';
 }
 
+/**
+ * Interface for interacting with the nhentai API
+ */
 export class API {
     /**
      * Construct a new API wrapper
@@ -161,7 +167,7 @@ export class API {
 }
 
 /**
- * Represents errors returned by the api (not network)
+ * Represents errors returned by the api (not network/fetch error)
  */
 export class nhentaiAPIError extends Error {
     response: Record<string, unknown>;

@@ -6,7 +6,7 @@ import { Doujin } from './doujin';
 import { SearchResult } from './search';
 
 /**
- * Search options for `API#fetchHomepage`/`search`/`searchByTagID`
+ * Search options for `fetchHomepage`/`search`/`searchByTagID`
  */
 export interface APISearchOptions {
     page?: number;
@@ -20,8 +20,12 @@ export interface APISearchOptions {
 export class API {
     /**
      * Construct a new API wrapper
+     * @param options Library options
+     * @param options.blacklistedTags Blacklist doujins with tags from returning data.
+     * Ex: fetching a yaoi doujin with the `yaoi` tag blacklisted will return nothing.
+     * Will also be excluded from search results.
      */
-    constructor(public options = {}) {}
+    constructor(public options: { blacklistedTags?: string[] } = {}) {}
 
     /**
      * Node-fetch wrapper that handles api errors
@@ -38,7 +42,15 @@ export class API {
     }
 
     /**
-     * Check if a doujin exists
+     * Checks if a doujin doesn't have blacklisted tags (`API#options#blacklistedTags`)
+     * @param doujin The raw doujin returned from the API
+     */
+    private isNotBlacklisted(doujin: APIDoujin): boolean {
+        return !doujin.tags.some(tag => this.options.blacklistedTags?.includes(tag.name));
+    }
+
+    /**
+     * Check if a doujin exists. Bypasses `API#options#blacklistedTags`
      * @param id ID of the doujin
      */
     async doujinExists(id: number | string): Promise<boolean> {
@@ -70,7 +82,10 @@ export class API {
         if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
         return this.fetch(`/gallery/${id}`)
-            .then(data => new Doujin(data as APIDoujin))
+            .then(data => {
+                const doujin = new Doujin(data as APIDoujin);
+                return this.isNotBlacklisted(doujin.raw) ? doujin : null;
+            })
             .catch(err => {
                 if (err.response?.error === 'does not exist') return null;
                 throw err;
@@ -78,7 +93,7 @@ export class API {
     }
 
     /**
-     * Fetch a doujin's comments
+     * Fetch a doujin's comments. Bypasses `API#options#blacklistedTags`
      * @param id ID of the doujin
      */
     async fetchComments(id: number | string): Promise<Comment[] | null> {
@@ -113,7 +128,9 @@ export class API {
 
         // prettier-ignore
         const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
-        return new SearchResult(res as APISearchResult);
+        const data = res as APISearchResult;
+        data.result = data.result.filter(this.isNotBlacklisted.bind(this));
+        return new SearchResult(data);
     }
 
     /**
@@ -129,7 +146,9 @@ export class API {
         // An empty &sort query param causes an error
         // prettier-ignore
         const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
-        return new SearchResult(res as APISearchResult);
+        const data = res as APISearchResult;
+        data.result = data.result.filter(this.isNotBlacklisted.bind(this));
+        return new SearchResult(data);
     }
 
     /**
@@ -141,7 +160,9 @@ export class API {
         if (isNaN(id)) throw new TypeError('doujinID is not a number');
 
         const res = await this.fetch(`/gallery/${id}/related`);
-        return new SearchResult(res as APISearchResult);
+        const data = res as APISearchResult;
+        data.result = data.result.filter(this.isNotBlacklisted.bind(this));
+        return new SearchResult(data);
     }
 
     /**
@@ -159,10 +180,13 @@ export class API {
      * Fetch a random doujin
      */
     async randomDoujin(): Promise<Doujin> {
-        const id = await this.randomDoujinID();
-        const doujin = await this.fetchDoujin(id);
-        if (!doujin) throw new Error('Failed to retrieve doujin that exists. Please try again.');
-        return doujin;
+        let retries = 5;
+        while (retries--) {
+            const doujin = await this.fetchDoujin(await this.randomDoujinID());
+            if (!doujin || !this.isNotBlacklisted(doujin.raw)) continue;
+            return doujin;
+        }
+        throw new Error('Max retries exceeded');
     }
 }
 

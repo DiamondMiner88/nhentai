@@ -32,7 +32,7 @@ export class API {
      * @param path API path
      * @returns parsed JSON
      */
-    private async fetch(path: string): Promise<unknown> {
+    private async fetch<T>(path: string): Promise<T> {
         return fetch(API_URL + path)
             .then(res => res.json())
             .then(json => {
@@ -66,7 +66,7 @@ export class API {
                 case 404:
                     return false;
                 default:
-                    throw new Error(`Status code is not a 404 or 200. (${res.status})`);
+                    throw new Error(`Unexpected status code (${res.status})`);
             }
         });
     }
@@ -81,10 +81,9 @@ export class API {
         if (isNaN(id)) throw new TypeError('id is not a number');
         if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
-        return this.fetch(`/gallery/${id}`)
+        return this.fetch<APIDoujin>(`/gallery/${id}`)
             .then(data => {
-                const doujin = new Doujin(data as APIDoujin);
-                return this.isNotBlacklisted(doujin.raw) ? doujin : null;
+                return this.isNotBlacklisted(data) ? new Doujin(data) : null;
             })
             .catch(err => {
                 if (err.response?.error === 'does not exist') return null;
@@ -102,8 +101,8 @@ export class API {
         if (isNaN(id)) throw new TypeError('id is not a number');
         if (id <= 0) throw new RangeError('id cannot be lower than 1');
 
-        return this.fetch(`/gallery/${id}/comments`)
-            .then(data => (data as APIComment[]).map(comment => new Comment(comment)))
+        return this.fetch<APIComment[]>(`/gallery/${id}/comments`)
+            .then(data => data.map(comment => new Comment(comment)))
             .catch(err => {
                 if (err.response?.error === 'Gallery does not exist') return null;
                 throw err;
@@ -127,8 +126,7 @@ export class API {
         if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
 
         // prettier-ignore
-        const res = await this.fetch(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
-        const data = res as APISearchResult;
+        const data = await this.fetch<APISearchResult>(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
         data.result = data.result.filter(this.isNotBlacklisted.bind(this));
         return new SearchResult(data);
     }
@@ -145,8 +143,7 @@ export class API {
 
         // An empty &sort query param causes an error
         // prettier-ignore
-        const res = await this.fetch(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
-        const data = res as APISearchResult;
+        const data = await this.fetch<APISearchResult>(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
         data.result = data.result.filter(this.isNotBlacklisted.bind(this));
         return new SearchResult(data);
     }
@@ -159,8 +156,7 @@ export class API {
         id = Number(id);
         if (isNaN(id)) throw new TypeError('doujinID is not a number');
 
-        const res = await this.fetch(`/gallery/${id}/related`);
-        const data = res as APISearchResult;
+        const data = await this.fetch<APISearchResult>(`/gallery/${id}/related`);
         data.result = data.result.filter(this.isNotBlacklisted.bind(this));
         return new SearchResult(data);
     }

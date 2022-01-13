@@ -2,22 +2,22 @@
  * Sorting method for the API used by some fetching/search methods
  */
 export enum SortMethods {
-    /**
-     * Sort by most recently published
-     */
-    RECENT = '',
-    /**
-     * Sort by amount of favorites
-     */
-    POPULAR_ALL_TIME = 'popular',
-    /**
-     * Sort by amount of favorites gained in the last 7 days
-     */
-    POPULAR_THIS_WEEK = 'popular-week',
-    /**
-     * Sort by amount of favorites gained in the last 24 hours
-     */
-    POPULAR_TODAY = 'popular-today'
+	/**
+	 * Sort by most recently published
+	 */
+	RECENT = '',
+	/**
+	 * Sort by amount of favorites
+	 */
+	POPULAR_ALL_TIME = 'popular',
+	/**
+	 * Sort by amount of favorites gained in the last 7 days
+	 */
+	POPULAR_THIS_WEEK = 'popular-week',
+	/**
+	 * Sort by amount of favorites gained in the last 24 hours
+	 */
+	POPULAR_TODAY = 'popular-today'
 }
 
 // Cached values for argument checking

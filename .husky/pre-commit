@@ -2,5 +2,11 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run lint
-npm run test
 npm run prettier
+
+npm run coverage
+sed -i -E 's/<img src="https:\/\/img.shields.io\/badge\/Coverage.*/![Lines]\(\)/' README.md
+npx istanbul-badges-readme
+sed -i -E 's/!\[Lines\]\((.*)\)/<img src="\1" alt="Code Coverage"\/>/' README.md
+sed -i -E 's/lines-/Coverage-/' README.md
+git add 'README.md'

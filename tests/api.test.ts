@@ -113,7 +113,9 @@ suite('API.ts', () => {
 
 		test('blacklisted excluded', async () => {
 			const results = await blacklistedTagsLib.search('yuruyakatou');
-			return expect(results.doujins.some(doujin => doujin.tags.all.some(tag => tag.name == 'yaoi'))).to.be.false;
+			return expect(
+				results.doujins.some(doujin => doujin.tags.all.some(tag => tag.name == 'yaoi'))
+			).to.be.false;
 		});
 	});
 
@@ -147,7 +149,9 @@ suite('API.ts', () => {
 
 		test('blacklisted excluded', async () => {
 			const results = await blacklistedTagsLib.searchByTagID(14283);
-			return expect(results.doujins.some(doujin => doujin.tags.all.some(tag => tag.name == 'yaoi'))).to.be.false;
+			return expect(
+				results.doujins.some(doujin => doujin.tags.all.some(tag => tag.name == 'yaoi'))
+			).to.be.false;
 		});
 	});
 
@@ -162,7 +166,9 @@ suite('API.ts', () => {
 
 		test('blacklisted excluded', async () => {
 			const results = await blacklistedTagsLib.searchRelated(387481);
-			return expect(results.doujins.some(doujin => doujin.tags.all.some(tag => tag.name == 'yaoi'))).to.be.false;
+			return expect(
+				results.doujins.some(doujin => doujin.tags.all.some(tag => tag.name == 'yaoi'))
+			).to.be.false;
 		});
 	});
 

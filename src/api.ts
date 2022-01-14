@@ -55,9 +55,12 @@ export class API {
 	 */
 	async doujinExists(id: number | string): Promise<boolean> {
 		id = Number(id);
-
-		if (isNaN(id)) throw new TypeError('id is not a number');
-		if (id <= 0) throw new RangeError('id cannot be lower than 1');
+		if (isNaN(id)) {
+			throw new TypeError('id is not a number');
+		}
+		if (id <= 0) {
+			throw new RangeError('id cannot be lower than 1');
+		}
 
 		return fetch(`${API_URL}/gallery/${id}`, { method: 'HEAD' }).then(res => {
 			switch (res.status) {
@@ -77,9 +80,12 @@ export class API {
 	 */
 	async fetchDoujin(id: number | string): Promise<Doujin | null> {
 		id = Number(id);
-
-		if (isNaN(id)) throw new TypeError('id is not a number');
-		if (id <= 0) throw new RangeError('id cannot be lower than 1');
+		if (isNaN(id)) {
+			throw new TypeError('id is not a number');
+		}
+		if (id <= 0) {
+			throw new RangeError('id cannot be lower than 1');
+		}
 
 		return this.fetch<APIDoujin>(`/gallery/${id}`)
 			.then(data => {
@@ -97,9 +103,12 @@ export class API {
 	 */
 	async fetchComments(id: number | string): Promise<Comment[] | null> {
 		id = Number(id);
-
-		if (isNaN(id)) throw new TypeError('id is not a number');
-		if (id <= 0) throw new RangeError('id cannot be lower than 1');
+		if (isNaN(id)) {
+			throw new TypeError('id is not a number');
+		}
+		if (id <= 0) {
+			throw new RangeError('id cannot be lower than 1');
+		}
 
 		return this.fetch<APIComment[]>(`/gallery/${id}/comments`)
 			.then(data => data.map(comment => new Comment(comment)))
@@ -122,11 +131,17 @@ export class API {
 	 * @param options Search Options
 	 */
 	async search(query: string, options: APISearchOptions = {}): Promise<SearchResult> {
-		if (options.page && isNaN(options.page)) throw new TypeError('page is not a number');
-		if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
+		if (options.page && isNaN(options.page)) {
+			throw new TypeError('page is not a number');
+		}
+		if (options.sort && !SortValues.includes(options.sort)) {
+			throw new TypeError('sort method is not valid');
+		}
 
 		// prettier-ignore
-		const data = await this.fetch<APISearchResult>(`/galleries/search?query=${query}${options.language ? ` ${options.language}` : ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`);
+		const url = `/galleries/search?query=${query} ${options.language || ''}&page=${options.page || '1'}&sort=${options.sort || SortMethods.RECENT}`
+		const data = await this.fetch<APISearchResult>(url);
+
 		data.result = data.result.filter(this.isNotBlacklisted.bind(this));
 		return new SearchResult(data);
 	}
@@ -137,13 +152,21 @@ export class API {
 	 * @param options Search Options
 	 */
 	async searchByTagID(id: number, options: APISearchOptions = {}): Promise<SearchResult> {
-		if (isNaN(id)) throw new TypeError('tagId is not a number');
-		if (options.page && isNaN(options.page)) throw new TypeError('page is not a number');
-		if (options.sort && !SortValues.includes(options.sort)) throw new TypeError('sort method is not valid');
+		if (isNaN(id)) {
+			throw new TypeError('tagId is not a number');
+		}
+		if (options.page && isNaN(options.page)) {
+			throw new TypeError('page is not a number');
+		}
+		if (options.sort && !SortValues.includes(options.sort)) {
+			throw new TypeError('sort method is not valid');
+		}
 
 		// An empty &sort query param causes an error
 		// prettier-ignore
-		const data = await this.fetch<APISearchResult>(`/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`);
+		const url = `/galleries/tagged?tag_id=${id}&page=${options.page || '1'}${options.sort ? `&sort=${options.sort}` : ''}`
+		const data = await this.fetch<APISearchResult>(url);
+
 		data.result = data.result.filter(this.isNotBlacklisted.bind(this));
 		return new SearchResult(data);
 	}
@@ -154,9 +177,12 @@ export class API {
 	 */
 	async searchRelated(id: number | string): Promise<SearchResult> {
 		id = Number(id);
-		if (isNaN(id)) throw new TypeError('doujinID is not a number');
+		if (isNaN(id)) {
+			throw new TypeError('doujinID is not a number');
+		}
 
 		const data = await this.fetch<APISearchResult>(`/gallery/${id}/related`);
+
 		data.result = data.result.filter(this.isNotBlacklisted.bind(this));
 		return new SearchResult(data);
 	}

@@ -5,7 +5,8 @@ use(chai_as_promised);
 
 import { API, Image } from '../src/index';
 
-const imgURLRegex = /^https:\/\/[ti]\.nhentai\.net\/galleries\/\d{1,7}\/(?:\d{0,4}|thumb|cover)\.(?:gif|jpg|png)$/;
+const imgURLRegex =
+	/^https:\/\/[ti]\.nhentai\.net\/galleries\/\d{1,7}\/(?:\d{0,4}|thumb|cover)\.(?:gif|jpg|png)$/;
 const extensions = ['png', 'jpg', 'gif'];
 
 suite('Image', () => {

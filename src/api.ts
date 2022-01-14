@@ -188,7 +188,8 @@ export class API {
 	}
 
 	/**
-	 * Fetch a random doujin ID
+	 * Fetch a random doujin ID.
+	 * Bypasses `API#options#blacklistedTags`
 	 */
 	async randomDoujinID(): Promise<number> {
 		return fetch(`${HOST_URL}/random`, { method: 'HEAD' }).then(data => {
@@ -200,9 +201,11 @@ export class API {
 
 	/**
 	 * Fetch a random doujin
+	 * @param options.retries Amount of retries to find a non-blacklisted doujin. Default 5.
 	 */
-	async randomDoujin(): Promise<Doujin> {
-		let retries = 5;
+	async randomDoujin(options: { retries?: number } = {}): Promise<Doujin> {
+		let retries = options.retries ?? 5;
+
 		while (retries--) {
 			const doujin = await this.fetchDoujin(await this.randomDoujinID());
 			if (!doujin || !this.isNotBlacklisted(doujin.raw)) continue;

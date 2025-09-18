@@ -89,7 +89,17 @@ suite('tag.ts', () => {
 		});
 
 		test('TagManager#getByTag', () => {
-			return expect(manager.getByType('tag')[0].name).to.equal('sole male');
+			const expectedTags = [
+				'multi-work series',
+				'stockings',
+				'sole female',
+				'sole male',
+				'ponytail',
+				'gloves'
+			];
+			return expect(manager.getByType('tag').map(t => t.name)).to.include.members(
+				expectedTags
+			);
 		});
 	});
 });

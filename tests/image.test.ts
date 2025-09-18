@@ -40,8 +40,8 @@ suite('Image', () => {
 		return expect(image.pageNumber).to.equal(1);
 	});
 
-	test('Image#fetch -> Buffer', () => {
-		return expect(image.fetch()).to.eventually.be.instanceOf(Buffer);
+	test('Image#fetch -> ArrayBuffer', () => {
+		return expect(image.fetch()).to.eventually.be.instanceOf(ArrayBuffer);
 	});
 
 	suite('extensionConvert', () => {

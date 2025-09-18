@@ -141,7 +141,7 @@ suite('API.ts', () => {
 
 		test('different SortMethod', () => {
 			return expect(
-				lib.searchByTagID(1, {
+				lib.searchByTagID(8739, {
 					sort: SortMethods.POPULAR_ALL_TIME
 				})
 			).to.eventually.be.instanceOf(SearchResult);

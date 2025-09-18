@@ -1,13 +1,12 @@
-import fetch from 'node-fetch';
-import { Doujin } from './doujin';
-import { THUMBS_URL, IMAGE_URL } from './constants';
-import { APIImage } from './apitypes';
+import { Doujin } from './doujin.js';
+import { THUMBS_URL, IMAGE_URL } from './constants.js';
+import { APIImage } from './apitypes.js';
 
 export class Image {
 	/**
 	 * File extension
 	 */
-	readonly extension: 'png' | 'gif' | 'jpg';
+	readonly extension: 'png' | 'gif' | 'jpg' | 'webp';
 
 	/**
 	 * Height in pixels
@@ -47,8 +46,8 @@ export class Image {
 	/**
 	 * Fetches the image
 	 */
-	async fetch(): Promise<Buffer> {
-		return fetch(this.url).then(data => data.buffer());
+	async fetch(): Promise<ArrayBuffer> {
+		return fetch(this.url).then(data => data.arrayBuffer());
 	}
 
 	/**
@@ -64,6 +63,8 @@ export class Image {
 				return 'jpg';
 			case 'g':
 				return 'gif';
+			case 'w':
+				return 'webp';
 			default:
 				throw new Error(`Image extension "${extension}" is not a known format.`);
 		}

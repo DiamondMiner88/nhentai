@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "lib": ["es6"],
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "target": "es2021",
+        "lib": ["es2021"],
         "outDir": "./dist",
         "strict": true,
         "declaration": true,

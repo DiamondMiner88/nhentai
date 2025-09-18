@@ -1,7 +1,7 @@
-import { Image } from './image';
-import { TagManager } from './tag';
-import { HOST_URL } from './constants';
-import { APIDoujin } from './apitypes';
+import { Image } from './image.js';
+import { TagManager } from './tag.js';
+import { HOST_URL } from './constants.js';
+import { APIDoujin } from './apitypes.js';
 
 export class Doujin {
 	/**

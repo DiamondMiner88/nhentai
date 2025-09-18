@@ -1,10 +1,7 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+pnpm run prettier
+pnpm run coverage
 
-npm run lint
-npm run prettier
-
-npm run coverage
+# Update test coverage badge on README
 sed -i -E 's/<img src="https:\/\/img.shields.io\/badge\/Coverage.*/![Lines]\(\)/' README.md
 npx istanbul-badges-readme
 sed -i -E 's/!\[Lines\]\((.*)\)/<img src="\1" alt="Code Coverage"\/>/' README.md

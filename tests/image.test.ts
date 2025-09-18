@@ -1,9 +1,9 @@
 import { suite, test } from 'mocha';
 import { use, expect } from 'chai';
-import * as chai_as_promised from 'chai-as-promised';
-use(chai_as_promised);
+import chaiAsPromised from 'chai-as-promised';
+use(chaiAsPromised);
 
-import { API, Image } from '../src/index';
+import { API, Image } from '../src/index.js';
 
 const imgURLRegex =
 	/^https:\/\/[ti]\.nhentai\.net\/galleries\/\d{1,7}\/(?:\d{0,4}|thumb|cover)\.(?:gif|jpg|png)$/;

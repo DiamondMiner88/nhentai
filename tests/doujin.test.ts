@@ -1,9 +1,9 @@
 import { suite, test } from 'mocha';
 import { use, expect } from 'chai';
-import * as chai_as_promised from 'chai-as-promised';
-use(chai_as_promised);
+import chaiAsPromised from 'chai-as-promised';
+use(chaiAsPromised);
 
-import { API, Image, Doujin, TagManager } from '../src/index';
+import { API, Image, Doujin, TagManager } from '../src/index.js';
 
 suite('Doujin', () => {
 	const lib = new API();

@@ -1,8 +1,8 @@
 import { suite, test } from 'mocha';
 import { expect } from 'chai';
 
-import { API } from '../src/index';
-import { CommentAuthor } from '../src/commentAuthor';
+import { API } from '../src/index.js';
+import { CommentAuthor } from '../src/commentAuthor.js';
 
 suite('commentAuthor.ts', () => {
 	const lib = new API();

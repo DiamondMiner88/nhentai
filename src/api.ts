@@ -1,9 +1,8 @@
-import fetch from 'node-fetch';
-import { API_URL, HOST_URL, SortMethods, SortValues } from './constants';
-import { APIComment, APIDoujin, APISearchResult } from './apitypes';
-import { Comment } from './comment';
-import { Doujin } from './doujin';
-import { SearchResult } from './search';
+import { API_URL, HOST_URL, SortMethods, SortValues } from './constants.js';
+import { APIComment, APIDoujin, APISearchResult } from './apitypes.js';
+import { Comment } from './comment.js';
+import { Doujin } from './doujin.js';
+import { SearchResult } from './search.js';
 
 /**
  * Search options for `fetchHomepage`/`search`/`searchByTagID`
@@ -36,8 +35,11 @@ export class API {
 		return fetch(API_URL + path)
 			.then(res => res.json())
 			.then(json => {
-				if (json.error) throw new nhentaiAPIError(json, path);
-				else return json;
+				if ((json as { error?: boolean }).error) {
+					throw new nhentaiAPIError(json as Record<string, unknown>, path);
+				} else {
+					return json as T;
+				}
 			});
 	}
 

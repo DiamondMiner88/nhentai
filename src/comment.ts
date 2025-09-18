@@ -1,5 +1,5 @@
-import { APIComment } from './apitypes';
-import { CommentAuthor } from './commentAuthor';
+import { APIComment } from './apitypes.js';
+import { CommentAuthor } from './commentAuthor.js';
 
 /**
  * A single comment on a doujin

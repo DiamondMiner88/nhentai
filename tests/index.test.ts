@@ -1,7 +1,7 @@
 import { suite, test } from 'mocha';
 import { expect } from 'chai';
 
-import * as nhentai from '../src/index';
+import * as nhentai from '../src/index.js';
 
 suite('index.ts', () => {
 	test('exports', () => {

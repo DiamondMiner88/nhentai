@@ -1,5 +1,5 @@
-import { Doujin } from './doujin';
-import { APISearchResult } from './apitypes';
+import { Doujin } from './doujin.js';
+import { APISearchResult } from './apitypes.js';
 
 export class SearchResult {
 	/**

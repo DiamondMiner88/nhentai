@@ -1,5 +1,5 @@
-import { HOST_URL } from './constants';
-import { APITag, APITagType } from './apitypes';
+import { HOST_URL } from './constants.js';
+import { APITag, APITagType } from './apitypes.js';
 
 export class Tag {
 	/**

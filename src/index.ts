@@ -1,9 +1,9 @@
-export * from './api';
-export * from './apitypes';
-export * from './comment';
-export * from './commentAuthor';
-export * from './doujin';
-export * from './image';
-export * from './search';
-export * from './tag';
-export { SortMethods, HOST_URL, IMAGE_URL, THUMBS_URL, API_URL } from './constants';
+export * from './api.js';
+export * from './apitypes.js';
+export * from './comment.js';
+export * from './commentAuthor.js';
+export * from './doujin.js';
+export * from './image.js';
+export * from './search.js';
+export * from './tag.js';
+export { SortMethods, HOST_URL, IMAGE_URL, THUMBS_URL, API_URL } from './constants.js';

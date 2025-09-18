@@ -1,28 +1,19 @@
 <div align="center">
-  <br/>
+  <h1>nhentai</h1>
   <p>
-    <img width="700" src="https://raw.githubusercontent.com/DiamondMiner88/nhentai/main/.github/logo.svg">
-  </p>
-  <br />
-  <p>
-    <a href="https://discord.gg/kkcqFZrT52"><img src="https://img.shields.io/discord/775543884503056424?color=7289da&logo=discord&logoColor=white" alt="Discord server" /></a>
     <a href="https://www.npmjs.com/package/nhentai"><img src="https://img.shields.io/npm/dt/nhentai.svg?maxAge=3600" alt="NPM downloads" /></a>
-    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FDiamondMiner88%2Fnhentai&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=views"/>
     <img src="https://img.shields.io/badge/Coverage-97.14%25-brightgreen.svg?style=flat" alt="Code Coverage"/>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/nhentai"></a>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm" src="https://img.shields.io/npm/v/nhentai"></a>
   </p>
+  <p>A library for interacting with the nhentai API</p>
 </div>
 
-#  A library for interacting with the [nhentai](https://nhentai.net) API
-
-- [Documentation](https://diamondminer88.github.io/nhentai/index.html)
-- 100% coverage of known API
-- NOT ABANDONED, JUST FEATURE COMPLETE
-
 ### Installing
-```
-npm install nhentai
+```shell
+$ npm install nhentai
+$ pnpm install nhentai
+$ yarn install nhentai
 ```
 
 ### Usage

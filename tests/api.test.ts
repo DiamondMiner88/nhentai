@@ -1,9 +1,9 @@
 import { suite, test } from 'mocha';
 import { use, expect } from 'chai';
-import * as chai_as_promised from 'chai-as-promised';
-use(chai_as_promised);
+import chaiAsPromised from 'chai-as-promised';
+use(chaiAsPromised);
 
-import { API, Comment, Doujin, SearchResult, SortMethods } from '../src/index';
+import { API, Comment, Doujin, SearchResult, SortMethods } from '../src/index.js';
 
 suite('API.ts', () => {
 	const lib = new API();

@@ -1,7 +1,7 @@
 import { suite, test } from 'mocha';
 import { expect } from 'chai';
 
-import { API, Comment, CommentAuthor } from '../src/index';
+import { API, Comment, CommentAuthor } from '../src/index.js';
 
 suite('comment.ts', () => {
 	const lib = new API();

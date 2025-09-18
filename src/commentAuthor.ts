@@ -1,4 +1,5 @@
-import { APICommentAuthor, IMAGE_URL } from '.';
+import { APICommentAuthor } from './apitypes.js';
+import { IMAGE_URL } from './constants.js';
 
 /**
  * An author of a comment on a doujin

@@ -33,8 +33,22 @@ export class API {
 	 */
 	private async fetch<T>(path: string): Promise<T> {
 		return fetch(API_URL + path)
-			.then(res => res.json())
-			.then(json => {
+			.then(res => res.text())
+			.then(text => {
+				if (text.startsWith('<!DOCTYPE html>')) {
+					throw new nhentaiAPIError(
+						'Encountered a Cloudflare challenge! Consider using a FlareSolverr proxy.',
+						path
+					);
+				}
+
+				let json: unknown;
+				try {
+					json = JSON.parse(text);
+				} catch {
+					throw new nhentaiAPIError(text, path);
+				}
+
 				if ((json as { error?: boolean }).error) {
 					throw new nhentaiAPIError(json as Record<string, unknown>, path);
 				} else {
@@ -221,10 +235,11 @@ export class API {
  * Represents errors returned by the api (not network/fetch error)
  */
 export class nhentaiAPIError extends Error {
-	response: Record<string, unknown>;
+	response: unknown;
 	url: string;
-	constructor(response: Record<string, unknown>, url: string) {
-		super(JSON.stringify(response));
+
+	constructor(response: unknown, url: string) {
+		super(typeof response === 'string' ? response : JSON.stringify(response));
 		this.response = response;
 		this.url = url;
 		this.name = 'nhentaiAPIError';

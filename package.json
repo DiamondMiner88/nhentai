@@ -6,14 +6,14 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
-		"test": "mocha -t 20000 --retries 1 --parallel -r ts-node/register tests/*.test.ts",
+		"test": "mocha ./tests",
 		"lint": "eslint --ext .ts --fix src",
 		"build": "rm -rf dist/** && tsc",
 		"docs": "typedoc --out docs --exclude src/index.ts src",
 		"changelog": "conventional-changelog -p angular",
 		"prepare": "husky",
 		"prettier": "prettier --write \"{src,tests}/*.ts\" \"package.json\"",
-		"coverage": "nyc npm run test"
+		"coverage": "nyc pnpm run test"
 	},
 	"keywords": [
 		"nhentai",
@@ -29,6 +29,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@eslint/js": "^9.35.0",
+		"@istanbuljs/nyc-config-typescript": "^1.0.2",
 		"@types/chai": "^5.2.2",
 		"@types/chai-as-promised": "^8.0.2",
 		"@types/mocha": "^10.0.10",
@@ -43,7 +44,7 @@
 		"mocha": "^11.7.2",
 		"nyc": "^17.1.0",
 		"prettier": "^3.6.2",
-		"ts-node": "^10.9.2",
+		"tsx": "^4.20.5",
 		"typedoc": "^0.28.13",
 		"typescript": "^5.9.2",
 		"typescript-eslint": "^8.44.0"

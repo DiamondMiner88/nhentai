@@ -5,7 +5,7 @@ use(chaiAsPromised);
 
 import { API, Image, Doujin, TagManager } from '../src/index.js';
 
-suite('Doujin', () => {
+suite('doujin.ts', () => {
 	const lib = new API();
 
 	let doujin: Doujin;

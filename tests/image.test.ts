@@ -1,15 +1,15 @@
 import { suite, test } from 'mocha';
-import { use, expect } from 'chai';
+import { expect, use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-use(chaiAsPromised);
-
 import { API, Image } from '../src/index.js';
+
+use(chaiAsPromised);
 
 const imgURLRegex =
 	/^https:\/\/[ti]\.nhentai\.net\/galleries\/\d{1,7}\/(?:\d{0,4}|thumb|cover)\.(?:gif|jpg|png)$/;
 const extensions = ['png', 'jpg', 'gif'];
 
-suite('Image', () => {
+suite('image.ts', () => {
 	const lib = new API();
 
 	let image: Image;
@@ -54,8 +54,10 @@ suite('Image', () => {
 		// @ts-expect-error tests
 		test('gif', () => expect(Image.extensionConvert('g')).to.equal('gif'));
 
-		// FIXME: .throw() has no effect
-		// // @ts-expect-error tests
-		// test('other', () => expect(Image.extensionConvert('abc')).to.throw());
+		// @ts-expect-error tests
+		test('webp', () => expect(Image.extensionConvert('w')).to.equal('webp'));
+
+		// @ts-expect-error tests
+		test('other', () => expect(() => Image.extensionConvert('abc')).to.throw());
 	});
 });

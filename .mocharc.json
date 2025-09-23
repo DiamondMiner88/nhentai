@@ -1,6 +1,12 @@
 {
-	"loader": "ts-node/esm",
 	"extensions": [
 		"ts"
-	]
+	],
+	"node-option": [
+		"import=tsx"
+	],
+	"parallel": true,
+	"retries": 1,
+	"spec": "tests/**/*.test.ts",
+	"timeout": 30000
 }

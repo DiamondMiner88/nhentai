@@ -5,7 +5,7 @@ use(chaiAsPromised);
 
 import { API, Comment, Doujin, SearchResult, SortMethods } from '../src/index.js';
 
-suite('API.ts', () => {
+suite('api.ts', () => {
 	const lib = new API();
 	const blacklistedTagsLib = new API({ blacklistedTags: ['yaoi'] });
 

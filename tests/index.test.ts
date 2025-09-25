@@ -13,6 +13,7 @@ suite('index.ts', () => {
 			'API_URL',
 			'API',
 			'nhentaiAPIError',
+			'FlareSolverrError',
 			'Comment',
 			'CommentAuthor',
 			'Doujin',

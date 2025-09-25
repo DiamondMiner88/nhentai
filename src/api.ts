@@ -14,47 +14,120 @@ export interface APISearchOptions {
 }
 
 /**
+ * Library options for the {@linkcode API}.
+ */
+export interface APIOptions {
+	/**
+	 * Blacklist doujins with tags from returning data.
+	 * For example, fetching a yaoi doujin with the `yaoi` tag blacklisted will return nothing.
+	 * Will also be excluded from search results.
+	 */
+	blacklistedTags?: string[];
+
+	/**
+	 * FlareSolverr-compatible API url. If specified, API requests are proxied through FlareSolverr
+	 * in order to bypass Cloudflare challenges, most commonly seen on search requests.
+	 *
+	 * This requires the `htmlparser2` optional dependency of this package.
+	 *
+	 * Example: `http://localhost:8081/v1`
+	 */
+	flaresolverrUrl?: string;
+}
+
+/**
  * Interface for interacting with the nhentai API
  */
 export class API {
 	/**
 	 * Construct a new API wrapper
 	 * @param options Library options
-	 * @param options.blacklistedTags Blacklist doujins with tags from returning data.
-	 * Ex: fetching a yaoi doujin with the `yaoi` tag blacklisted will return nothing.
-	 * Will also be excluded from search results.
 	 */
-	constructor(public options: { blacklistedTags?: string[] } = {}) {}
+	constructor(public options: APIOptions = {}) {}
 
 	/**
-	 * Node-fetch wrapper that handles api errors
+	 * Internal wrapper to handle directly fetching the nhentai API as well as fetching
+	 * through a FlareSolverr proxy.
 	 * @param path API path
-	 * @returns parsed JSON
+	 * @private
 	 */
 	private async fetch<T>(path: string): Promise<T> {
+		if (!this.options.flaresolverrUrl) return this.fetchDirect(path);
+
+		const res = await fetch(this.options.flaresolverrUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				cmd: 'request.get',
+				url: API_URL + path,
+				returnRawHtml: true, // Removed in FlareSolverr v2
+				maxTimout: 60000
+			})
+		}).then(res => {
+			interface FlareSolverrResponse {
+				status: string;
+				solution: {
+					response: string;
+				};
+			}
+
+			return res.json() as unknown as FlareSolverrResponse;
+		});
+
+		if (res.status !== 'ok') {
+			throw new FlareSolverrError(res, this.options.flaresolverrUrl);
+		}
+
+		// FlareSolverr returns the HTMl representation if returnRawHtml is unsupported
+		if (res.solution.response.startsWith('<')) {
+			const { parseDocument, DomUtils } = await import('htmlparser2');
+
+			const document = parseDocument(res.solution.response);
+			const preNode = DomUtils.getElementsByTagName('pre', document, true, 1);
+			const json = DomUtils.textContent(preNode[0]);
+
+			return this.parseApiResponse(json, path);
+		} else {
+			return this.parseApiResponse(res.solution.response, path);
+		}
+	}
+
+	/**
+	 * Node-fetch wrapper that handles nhentai API errors.
+	 * @param path API path
+	 * @returns The parsed JSON
+	 * @private
+	 */
+	private async fetchDirect<T>(path: string): Promise<T> {
 		return fetch(API_URL + path)
 			.then(res => res.text())
 			.then(text => {
-				if (text.startsWith('<!DOCTYPE html>')) {
+				if (text.startsWith('<')) {
 					throw new nhentaiAPIError(
 						'Encountered a Cloudflare challenge! Consider using a FlareSolverr proxy.',
 						path
 					);
 				}
 
-				let json: unknown;
-				try {
-					json = JSON.parse(text);
-				} catch {
-					throw new nhentaiAPIError(text, path);
-				}
-
-				if ((json as { error?: boolean }).error) {
-					throw new nhentaiAPIError(json as Record<string, unknown>, path);
-				} else {
-					return json as T;
-				}
+				return this.parseApiResponse(text, path);
 			});
+	}
+
+	private parseApiResponse<T>(content: string, path: string): T {
+		let json: unknown;
+		try {
+			json = JSON.parse(content);
+		} catch {
+			throw new nhentaiAPIError(content, path);
+		}
+
+		if ((json as { error?: boolean }).error) {
+			throw new nhentaiAPIError(json as Record<string, unknown>, path);
+		} else {
+			return json as T;
+		}
 	}
 
 	/**
@@ -244,5 +317,17 @@ export class nhentaiAPIError extends Error {
 		this.url = url;
 		this.name = 'nhentaiAPIError';
 		Error.captureStackTrace(this, nhentaiAPIError);
+	}
+}
+
+/**
+ * Represents errors returned by the FlareSolverr API (which could be wrapping an
+ * nhentai API error).
+ */
+export class FlareSolverrError extends nhentaiAPIError {
+	constructor(response: unknown, url: string) {
+		super(response, url);
+		this.name = 'FlareSolverrError';
+		Error.captureStackTrace(this, FlareSolverrError);
 	}
 }

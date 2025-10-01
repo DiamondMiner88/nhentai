@@ -1,6 +1,6 @@
 {
 	"name": "nhentai",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"description": "A library for interacting with the nhentai API",
 	"type": "module",
 	"main": "dist/index.js",
@@ -12,6 +12,7 @@
 		"docs": "typedoc --out docs --exclude src/index.ts src",
 		"changelog": "conventional-changelog -p angular",
 		"prepare": "husky",
+		"prepublishOnly": "pnpm run build && pnpm run test",
 		"prettier": "prettier --write \"{src,tests}/*.ts\" \"package.json\"",
 		"coverage": "nyc pnpm run test"
 	},

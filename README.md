@@ -2,7 +2,7 @@
   <h1>nhentai</h1>
   <p>
     <a href="https://www.npmjs.com/package/nhentai"><img src="https://img.shields.io/npm/dt/nhentai.svg?maxAge=3600" alt="NPM downloads" /></a>
-    <img src="https://img.shields.io/badge/Coverage-97.14%25-brightgreen.svg?style=flat" alt="Code Coverage"/>
+    <img src="https://img.shields.io/badge/Coverage-90.43%25-brightgreen.svg?style=flat" alt="Code Coverage"/>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/nhentai"></a>
     <a href="https://www.npmjs.com/package/nhentai"><img alt="npm" src="https://img.shields.io/npm/v/nhentai"></a>
   </p>
@@ -11,9 +11,9 @@
 
 ### Installing
 ```shell
-$ npm install nhentai
-$ pnpm install nhentai
-$ yarn install nhentai
+$ npm install nhentai --no-optional
+$ pnpm install nhentai --no-optional
+$ yarn install nhentai --no-optional
 ```
 
 ### Usage
@@ -39,3 +39,15 @@ api.fetchDoujin(334430).then(doujin => {
     doujin.tags.all.map(tag => tag.name).join(', ');
 });
 ```
+
+If you encounter frequent Cloudflare challenges (especially on search requests), you will likely need
+to set up a [Flaresolverr](https://github.com/FlareSolverr/FlareSolverr)-compatible API proxy in order to proxy
+this library's requests through it to the nhentai API.
+
+```typescript
+const api = new nhentai.API({
+    flaresolverrUrl: "http://localhost:8081/v1", // URL to selfhosted FlareSolverr API
+});
+```
+
+This feature also requires the npm package `htmlparser2` as an optional dependency of this library.
